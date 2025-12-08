@@ -3,806 +3,576 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Évaluation Badminton - CAP</title>
+    <title>Évaluation EPS - CAP</title>
     <link rel="manifest" href="manifest.json">
-    <meta name="theme-color" content="#1e40af">
+    <meta name="theme-color" content="#0f766e">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
         :root {
-            --primary: #1e40af;
-            --primary-dark: #1e3a8a;
-            --secondary: #10b981;
-            --danger: #ef4444;
+            --primary: #0f766e;
+            --primary-dark: #0d5d57;
+            --primary-light: #14b8a6;
+            --secondary: #6366f1;
+            --success: #22c55e;
             --warning: #f59e0b;
+            --danger: #ef4444;
+            --gray-50: #f9fafb;
             --gray-100: #f3f4f6;
             --gray-200: #e5e7eb;
             --gray-300: #d1d5db;
+            --gray-400: #9ca3af;
+            --gray-600: #4b5563;
             --gray-700: #374151;
+            --gray-800: #1f2937;
             --gray-900: #111827;
+            --radius: 12px;
+            --shadow: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -2px rgba(0,0,0,0.1);
+            --shadow-lg: 0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -4px rgba(0,0,0,0.1);
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: linear-gradient(135deg, #f0fdfa 0%, #e0f2fe 100%);
             min-height: 100vh;
-            padding: 20px;
-            color: var(--gray-900);
+            color: var(--gray-800);
         }
 
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            background: white;
-            border-radius: 16px;
-            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
-            overflow: hidden;
-        }
+        .app-container { max-width: 1600px; margin: 0 auto; padding: 20px; }
 
         header {
-            background: var(--primary);
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
             color: white;
-            padding: 30px;
+            padding: 20px 30px;
+            border-radius: var(--radius);
+            margin-bottom: 20px;
+            box-shadow: var(--shadow-lg);
+        }
+
+        header h1 { font-size: 1.6rem; font-weight: 700; margin-bottom: 4px; }
+        header p { opacity: 0.9; font-size: 0.9rem; }
+
+        /* Activity Selector */
+        .activity-selector {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .activity-btn {
+            flex: 1;
+            min-width: 150px;
+            padding: 16px 20px;
+            border: 3px solid var(--gray-200);
+            background: white;
+            border-radius: var(--radius);
+            cursor: pointer;
+            font-family: inherit;
+            transition: all 0.2s;
             text-align: center;
         }
 
-        header h1 {
-            font-size: 2em;
-            margin-bottom: 10px;
+        .activity-btn:hover {
+            border-color: var(--primary);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow);
         }
 
-        header p {
-            opacity: 0.9;
-            font-size: 1.1em;
+        .activity-btn.active {
+            border-color: var(--primary);
+            background: var(--primary);
+            color: white;
         }
+
+        .activity-btn .icon { font-size: 2rem; margin-bottom: 8px; }
+        .activity-btn .name { font-weight: 700; font-size: 1rem; }
+        .activity-btn .ca { font-size: 0.75rem; opacity: 0.8; margin-top: 4px; }
+
+        /* Theme colors per activity */
+        body.badminton { --primary: #0f766e; --primary-dark: #0d5d57; --primary-light: #14b8a6; }
+        body.relais { --primary: #dc2626; --primary-dark: #b91c1c; --primary-light: #f87171; }
+        body.musculation { --primary: #7c3aed; --primary-dark: #6d28d9; --primary-light: #a78bfa; }
 
         .tabs {
             display: flex;
-            background: var(--gray-100);
-            border-bottom: 2px solid var(--gray-200);
+            background: white;
+            border-radius: var(--radius);
+            padding: 6px;
+            margin-bottom: 20px;
+            box-shadow: var(--shadow);
+            gap: 4px;
+            flex-wrap: wrap;
         }
 
         .tab {
             flex: 1;
-            padding: 15px;
+            min-width: 90px;
+            padding: 12px 14px;
             background: none;
             border: none;
             cursor: pointer;
-            font-size: 1em;
+            font-size: 0.85rem;
             font-weight: 600;
-            color: var(--gray-700);
-            transition: all 0.3s;
-            position: relative;
+            color: var(--gray-600);
+            border-radius: 8px;
+            transition: all 0.2s;
+            font-family: inherit;
         }
 
-        .tab:hover {
-            background: var(--gray-200);
-        }
-
-        .tab.active {
-            background: white;
-            color: var(--primary);
-        }
-
-        .tab.active::after {
-            content: '';
-            position: absolute;
-            bottom: -2px;
-            left: 0;
-            right: 0;
-            height: 2px;
-            background: var(--primary);
-        }
+        .tab:hover { background: var(--gray-100); color: var(--gray-800); }
+        .tab.active { background: var(--primary); color: white; }
 
         .content {
-            padding: 30px;
+            background: white;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            overflow: hidden;
         }
 
-        .tab-content {
-            display: none;
-        }
-
-        .tab-content.active {
-            display: block;
-            animation: fadeIn 0.3s;
-        }
+        .tab-content { display: none; padding: 24px; }
+        .tab-content.active { display: block; animation: fadeIn 0.3s ease; }
 
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
+            from { opacity: 0; transform: translateY(8px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
-        .form-group {
+        .card {
+            background: var(--gray-50);
+            border: 1px solid var(--gray-200);
+            border-radius: var(--radius);
+            padding: 20px;
             margin-bottom: 20px;
         }
 
-        label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: 600;
-            color: var(--gray-700);
+        .card h3 {
+            font-size: 1.05rem;
+            font-weight: 700;
+            color: var(--gray-800);
+            margin-bottom: 16px;
         }
 
-        input[type="text"],
-        input[type="number"],
-        select {
+        .form-row { display: flex; gap: 12px; margin-bottom: 16px; flex-wrap: wrap; }
+        .form-group { flex: 1; min-width: 180px; }
+        .form-group label { display: block; font-size: 0.85rem; font-weight: 600; color: var(--gray-700); margin-bottom: 6px; }
+
+        input[type="text"], input[type="number"], select, textarea {
             width: 100%;
-            padding: 12px;
+            padding: 10px 14px;
             border: 2px solid var(--gray-200);
             border-radius: 8px;
-            font-size: 1em;
-            transition: border-color 0.3s;
+            font-size: 0.95rem;
+            font-family: inherit;
+            transition: border-color 0.2s;
         }
 
-        input[type="text"]:focus,
-        input[type="number"]:focus,
-        select:focus {
+        input:focus, select:focus, textarea:focus {
             outline: none;
             border-color: var(--primary);
         }
 
         .btn {
-            padding: 12px 24px;
+            padding: 10px 20px;
             border: none;
             border-radius: 8px;
-            font-size: 1em;
+            font-size: 0.9rem;
             font-weight: 600;
             cursor: pointer;
-            transition: all 0.3s;
+            transition: all 0.2s;
+            font-family: inherit;
             display: inline-flex;
             align-items: center;
-            gap: 8px;
+            gap: 6px;
         }
 
-        .btn-primary {
-            background: var(--primary);
-            color: white;
-        }
+        .btn-primary { background: var(--primary); color: white; }
+        .btn-primary:hover { background: var(--primary-dark); transform: translateY(-1px); }
+        .btn-secondary { background: var(--gray-200); color: var(--gray-700); }
+        .btn-secondary:hover { background: var(--gray-300); }
+        .btn-success { background: var(--success); color: white; }
+        .btn-danger { background: var(--danger); color: white; }
+        .btn-small { padding: 6px 12px; font-size: 0.8rem; }
+        .actions { display: flex; gap: 10px; margin-top: 20px; flex-wrap: wrap; }
 
-        .btn-primary:hover {
-            background: var(--primary-dark);
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(30, 64, 175, 0.3);
-        }
+        /* AFLP Sections */
+        .aflp-section { margin-bottom: 30px; }
 
-        .btn-secondary {
-            background: var(--secondary);
-            color: white;
-        }
-
-        .btn-secondary:hover {
-            background: #059669;
-            transform: translateY(-2px);
-        }
-
-        .btn-danger {
-            background: var(--danger);
-            color: white;
-        }
-
-        .btn-danger:hover {
-            background: #dc2626;
-        }
-
-        .btn-small {
-            padding: 6px 12px;
-            font-size: 0.9em;
-        }
-
-        .card {
-            background: var(--gray-100);
-            padding: 20px;
-            border-radius: 12px;
-            margin-bottom: 20px;
-            border: 2px solid transparent;
-            transition: all 0.3s;
-        }
-
-        .card:hover {
-            border-color: var(--primary);
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-        }
-
-        .card h3 {
-            color: var(--primary);
-            margin-bottom: 15px;
+        .aflp-header {
             display: flex;
             align-items: center;
+            justify-content: space-between;
+            padding: 14px 20px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            border-radius: var(--radius) var(--radius) 0 0;
+            flex-wrap: wrap;
             gap: 10px;
         }
 
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 20px;
-            margin-bottom: 20px;
+        .aflp-header h4 { font-size: 1rem; font-weight: 700; }
+        .aflp-header .points-badge {
+            background: rgba(255,255,255,0.2);
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
         }
 
-        .student-list {
-            list-style: none;
-        }
-
-        .student-item {
+        .aflp-body {
             background: white;
-            padding: 15px;
-            margin-bottom: 10px;
-            border-radius: 8px;
+            border: 2px solid var(--primary);
+            border-top: none;
+            border-radius: 0 0 var(--radius) var(--radius);
+            padding: 20px;
+        }
+
+        /* Criterion blocks */
+        .criterion-block {
+            background: var(--gray-50);
+            border: 1px solid var(--gray-200);
+            border-radius: var(--radius);
+            margin-bottom: 16px;
+            overflow: hidden;
+        }
+
+        .criterion-header {
+            background: var(--gray-200);
+            padding: 10px 16px;
+            font-weight: 700;
+            font-size: 0.9rem;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-            transition: all 0.3s;
         }
 
-        .student-item:hover {
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-            transform: translateX(5px);
-        }
-
-        .student-info {
-            flex: 1;
-        }
-
-        .student-name {
-            font-weight: 600;
-            color: var(--gray-900);
-            margin-bottom: 4px;
-        }
-
-        .student-note {
-            font-size: 0.9em;
-            color: var(--gray-700);
-        }
-
-        .note-badge {
+        .criterion-header .weight-badge {
             background: var(--primary);
             color: white;
-            padding: 6px 12px;
-            border-radius: 20px;
-            font-weight: 600;
-            font-size: 1.1em;
+            padding: 3px 10px;
+            border-radius: 12px;
+            font-size: 0.75rem;
         }
 
-        .actions {
-            display: flex;
-            gap: 10px;
-            margin-top: 20px;
+        .criterion-desc {
+            padding: 8px 16px;
+            font-size: 0.8rem;
+            color: var(--gray-600);
+            background: white;
+            border-bottom: 1px solid var(--gray-200);
         }
 
-        .degree-selector {
+        .criterion-levels {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
-            gap: 10px;
-            margin-top: 10px;
+            gap: 0;
         }
 
-        .degree-btn {
-            padding: 15px;
-            border: 2px solid var(--gray-300);
-            border-radius: 8px;
-            background: white;
-            cursor: pointer;
-            transition: all 0.3s;
+        .level-card {
+            padding: 10px 8px;
+            border-right: 1px solid var(--gray-200);
             text-align: center;
-            font-weight: 600;
-        }
-
-        .degree-btn:hover {
-            border-color: var(--primary);
-            transform: scale(1.05);
-        }
-
-        .degree-btn.selected {
-            background: var(--primary);
-            color: white;
-            border-color: var(--primary);
-        }
-
-        .degree-btn .degree-title {
-            font-size: 1.2em;
-            margin-bottom: 5px;
-        }
-
-        .degree-btn .degree-desc {
-            font-size: 0.85em;
-            opacity: 0.8;
-        }
-
-        .evaluation-form {
-            background: var(--gray-100);
-            padding: 25px;
-            border-radius: 12px;
-            margin-bottom: 20px;
-        }
-
-        .eval-section {
-            margin-bottom: 30px;
-            padding: 20px;
             background: white;
-            border-radius: 8px;
         }
 
-        .eval-section h4 {
-            color: var(--primary);
-            margin-bottom: 15px;
-            padding-bottom: 10px;
-            border-bottom: 2px solid var(--gray-200);
-        }
+        .level-card:last-child { border-right: none; }
 
-        .radio-group {
-            margin-top: 15px;
-        }
-
-        .radio-option {
-            display: flex;
-            align-items: center;
-            padding: 12px;
-            margin-bottom: 8px;
-            background: var(--gray-100);
-            border-radius: 6px;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-
-        .radio-option:hover {
-            background: var(--gray-200);
-        }
-
-        .radio-option input[type="radio"] {
-            margin-right: 12px;
-            width: 20px;
-            height: 20px;
-            cursor: pointer;
-        }
-
-        .alert {
-            padding: 15px;
-            border-radius: 8px;
-            margin-bottom: 20px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .alert-info {
-            background: #dbeafe;
-            color: #1e40af;
-            border-left: 4px solid #3b82f6;
-        }
-
-        .alert-success {
-            background: #d1fae5;
-            color: #065f46;
-            border-left: 4px solid #10b981;
-        }
-
-        .alert-warning {
-            background: #fef3c7;
-            color: #92400e;
-            border-left: 4px solid #f59e0b;
-        }
-
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 20px;
-            margin-bottom: 30px;
-        }
-
-        .stat-card {
-            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
-            color: white;
-            padding: 20px;
-            border-radius: 12px;
-            text-align: center;
-        }
-
-        .stat-value {
-            font-size: 2.5em;
-            font-weight: bold;
-            margin-bottom: 5px;
-        }
-
-        .stat-label {
-            opacity: 0.9;
-            font-size: 0.9em;
-        }
-
-        .match-results {
-            margin-top: 15px;
-        }
-
-        .match-input {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 10px;
-            align-items: center;
-        }
-
-        .match-input label {
-            margin: 0;
-            min-width: 150px;
-        }
-
-        .export-section {
-            margin-top: 30px;
-            padding: 20px;
-            background: var(--gray-100);
-            border-radius: 12px;
-        }
-
-        @media (max-width: 768px) {
-            .tabs {
-                flex-direction: column;
-            }
-
-            .degree-selector {
-                grid-template-columns: 1fr 1fr;
-            }
-
-            .stats-grid {
-                grid-template-columns: 1fr;
-            }
-        }
-
-        .loading {
-            display: inline-block;
-            width: 20px;
-            height: 20px;
-            border: 3px solid rgba(255, 255, 255, 0.3);
-            border-top-color: white;
+        .level-card .level-number {
+            width: 32px;
+            height: 32px;
             border-radius: 50%;
-            animation: spin 1s linear infinite;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 1rem;
+            margin: 0 auto 6px;
+            color: white;
         }
 
-        @keyframes spin {
-            to { transform: rotate(360deg); }
+        .level-card.l1 .level-number { background: #ef4444; }
+        .level-card.l2 .level-number { background: #f59e0b; }
+        .level-card.l3 .level-number { background: #22c55e; }
+        .level-card.l4 .level-number { background: #0f766e; }
+
+        .level-card .level-desc { font-size: 0.7rem; color: var(--gray-600); line-height: 1.3; }
+        .level-card .level-points { margin-top: 6px; font-weight: 700; font-size: 0.8rem; }
+
+        /* Evaluation Grid */
+        .eval-grid { width: 100%; overflow-x: auto; margin-top: 16px; }
+
+        .eval-table { width: 100%; border-collapse: collapse; font-size: 0.8rem; }
+        .eval-table th, .eval-table td { padding: 8px 6px; text-align: center; border: 1px solid var(--gray-200); }
+        .eval-table th { background: var(--primary); color: white; font-weight: 600; white-space: nowrap; }
+        .eval-table th.sub { background: var(--primary-dark); font-size: 0.7rem; }
+
+        .eval-table td.student-name {
+            text-align: left;
+            font-weight: 600;
+            background: var(--gray-50);
+            min-width: 130px;
+            position: sticky;
+            left: 0;
+            z-index: 1;
         }
 
-        .empty-state {
+        .eval-table tr:nth-child(even) td { background: var(--gray-50); }
+        .eval-table tr:nth-child(even) td.student-name { background: var(--gray-100); }
+        .eval-table tr:hover td { background: #e0f2fe; }
+        .eval-table tr:hover td.student-name { background: #bae6fd; }
+
+        .degree-selector-inline { display: flex; gap: 2px; justify-content: center; }
+
+        .degree-btn-mini {
+            width: 26px;
+            height: 26px;
+            border: 2px solid var(--gray-300);
+            background: white;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 700;
+            font-size: 0.7rem;
+            transition: all 0.15s;
+            font-family: inherit;
+        }
+
+        .degree-btn-mini:hover { border-color: var(--primary); }
+        .degree-btn-mini.selected { color: white; }
+        .degree-btn-mini.d1.selected { background: #ef4444; border-color: #ef4444; }
+        .degree-btn-mini.d2.selected { background: #f59e0b; border-color: #f59e0b; }
+        .degree-btn-mini.d3.selected { background: #22c55e; border-color: #22c55e; }
+        .degree-btn-mini.d4.selected { background: #0f766e; border-color: #0f766e; }
+
+        .score-cell { font-weight: 700; font-size: 0.9rem; background: var(--gray-100) !important; }
+        .score-cell.total { background: var(--primary) !important; color: white; }
+
+        /* Score input for fine-tuning */
+        .score-input-container {
+            margin-top: 6px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 2px;
+        }
+
+        .score-input {
+            width: 60px;
+            padding: 4px 6px;
+            border: 2px solid var(--primary);
+            border-radius: 6px;
+            font-size: 0.85rem;
+            font-weight: 600;
             text-align: center;
-            padding: 60px 20px;
-            color: var(--gray-700);
+            font-family: inherit;
         }
 
-        .empty-state svg {
-            width: 100px;
-            height: 100px;
-            margin-bottom: 20px;
-            opacity: 0.3;
+        .score-input:focus {
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(15, 118, 110, 0.2);
         }
 
-        .criteria-detail {
-            background: #f9fafb;
-            padding: 10px;
-            border-left: 3px solid var(--primary);
-            margin-top: 10px;
-            font-size: 0.95em;
-            line-height: 1.6;
+        .score-range {
+            font-size: 0.65rem;
+            color: var(--gray-500);
+        }
+
+        .repartition-select {
+            padding: 4px 6px;
+            border-radius: 4px;
+            border: 1px solid var(--gray-300);
+            font-size: 0.75rem;
+            font-family: inherit;
+        }
+
+        /* Gender selector for relais */
+        .gender-select {
+            padding: 4px 6px;
+            border-radius: 4px;
+            border: 1px solid var(--gray-300);
+            font-size: 0.75rem;
+        }
+
+        /* Student list */
+        .student-list { list-style: none; }
+        .student-item { display: flex; justify-content: space-between; align-items: center; padding: 12px 16px; border-bottom: 1px solid var(--gray-200); }
+        .student-item:last-child { border-bottom: none; }
+        .student-info { flex: 1; }
+        .student-name-display { font-weight: 600; }
+        .student-score { font-size: 0.85rem; color: var(--gray-600); }
+        .note-badge { background: var(--primary); color: white; padding: 6px 14px; border-radius: 20px; font-weight: 700; font-size: 0.9rem; }
+
+        /* Stats */
+        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 12px; margin-bottom: 20px; }
+        .stat-card { background: white; border: 1px solid var(--gray-200); border-radius: var(--radius); padding: 16px; text-align: center; }
+        .stat-value { font-size: 1.8rem; font-weight: 700; color: var(--primary); }
+        .stat-label { font-size: 0.8rem; color: var(--gray-600); margin-top: 4px; }
+
+        /* Notifications */
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 14px 20px;
+            background: var(--success);
+            color: white;
+            border-radius: 8px;
+            font-weight: 600;
+            box-shadow: var(--shadow-lg);
+            z-index: 9999;
+            animation: slideIn 0.3s ease;
+        }
+
+        @keyframes slideIn {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+
+        .empty-state { text-align: center; padding: 40px 20px; color: var(--gray-500); }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .app-container { padding: 10px; }
+            header { padding: 16px; }
+            header h1 { font-size: 1.3rem; }
+            .activity-btn { min-width: 100px; padding: 12px; }
+            .activity-btn .icon { font-size: 1.5rem; }
+            .tab { padding: 10px; font-size: 0.75rem; }
+            .tab-content { padding: 16px; }
+            .criterion-levels { grid-template-columns: repeat(2, 1fr); }
+            .level-card { border-bottom: 1px solid var(--gray-200); }
+            .eval-table { font-size: 0.7rem; }
+            .degree-btn-mini { width: 22px; height: 22px; font-size: 0.65rem; }
+        }
+
+        @media print {
+            body { background: white; }
+            .tabs, .actions, .btn, .activity-selector { display: none !important; }
+            .content { box-shadow: none; }
         }
     </style>
 </head>
-<body>
-    <div class="container">
+<body class="badminton">
+    <div class="app-container">
         <header>
-            <h1>🏸 Évaluation Badminton - CAP</h1>
-            <p>Gestion des évaluations au fil de la séquence et évaluation finale</p>
+            <h1>📊 Évaluation EPS - CAP</h1>
+            <p>Application multi-activités avec critères détaillés</p>
         </header>
 
+        <!-- Activity Selector -->
+        <div class="activity-selector">
+            <button class="activity-btn active" data-activity="badminton" onclick="selectActivity('badminton')">
+                <div class="icon">🏸</div>
+                <div class="name">Badminton</div>
+                <div class="ca">CA4 - Opposition</div>
+            </button>
+            <button class="activity-btn" data-activity="relais" onclick="selectActivity('relais')">
+                <div class="icon">🏃</div>
+                <div class="name">Relais Vitesse</div>
+                <div class="ca">CA1 - Performance</div>
+            </button>
+            <button class="activity-btn" data-activity="musculation" onclick="selectActivity('musculation')">
+                <div class="icon">💪</div>
+                <div class="name">Musculation</div>
+                <div class="ca">CA5 - Entretien</div>
+            </button>
+        </div>
+
         <div class="tabs">
-            <button class="tab active" onclick="switchTab('classes')">📚 Classes</button>
-            <button class="tab" onclick="switchTab('evaluate')">📝 Évaluer</button>
+            <button class="tab active" onclick="switchTab('classes')">👥 Classes</button>
+            <button class="tab" onclick="switchTab('sequence')">📋 Séquence (8pts)</button>
+            <button class="tab" onclick="switchTab('finale')">🏆 Finale (12pts)</button>
             <button class="tab" onclick="switchTab('results')">📊 Résultats</button>
             <button class="tab" onclick="switchTab('export')">💾 Export</button>
         </div>
 
         <div class="content">
-            <!-- TAB: Gestion des classes -->
+            <!-- TAB: Classes -->
             <div id="tab-classes" class="tab-content active">
                 <div class="card">
                     <h3>➕ Ajouter une classe</h3>
-                    <div class="form-group">
-                        <label for="className">Nom de la classe</label>
-                        <input type="text" id="className" placeholder="Ex: CAP 1A, BAC PRO 2">
-                    </div>
-                    <button class="btn btn-primary" onclick="addClass()">Créer la classe</button>
-                </div>
-
-                <div class="card">
-                    <h3>👥 Ajouter des élèves</h3>
-                    <div class="form-group">
-                        <label for="selectClass">Sélectionner une classe</label>
-                        <select id="selectClass" onchange="updateStudentForm()">
-                            <option value="">-- Choisir une classe --</option>
-                        </select>
-                    </div>
-                    <div id="studentFormSection" style="display: none;">
+                    <div class="form-row">
                         <div class="form-group">
-                            <label for="studentName">Nom et prénom de l'élève</label>
-                            <input type="text" id="studentName" placeholder="Ex: Dupont Jean">
+                            <label for="className">Nom de la classe</label>
+                            <input type="text" id="className" placeholder="Ex: CAP ELEC 1">
                         </div>
-                        <button class="btn btn-secondary" onclick="addStudent()">Ajouter l'élève</button>
+                        <div style="display: flex; align-items: flex-end;">
+                            <button class="btn btn-primary" onclick="addClass()">Créer</button>
+                        </div>
                     </div>
                 </div>
 
                 <div class="card">
-                    <h3>📋 Classes et élèves</h3>
-                    <div id="classesList"></div>
-                </div>
-            </div>
-
-            <!-- TAB: Évaluation -->
-            <div id="tab-evaluate" class="tab-content">
-                <div class="alert alert-info">
-                    <span>ℹ️</span>
-                    <div>
-                        <strong>Mode d'évaluation :</strong> Choisissez d'abord le type d'évaluation (au fil de la séquence ou finale),
-                        puis sélectionnez la classe et l'élève à évaluer.
-                    </div>
-                </div>
-
-                <div class="card">
-                    <h3>🎯 Type d'évaluation</h3>
-                    <div class="radio-group">
-                        <label class="radio-option">
-                            <input type="radio" name="evalType" value="sequence" checked onchange="updateEvalType()">
-                            <div>
-                                <strong>Évaluation au fil de la séquence (8 pts)</strong>
-                                <div style="font-size: 0.9em; color: var(--gray-700); margin-top: 4px;">
-                                    AFLP4 (Arbitrer/Observer) et AFLP5 (Échauffement) - Choix de répartition
-                                </div>
-                            </div>
-                        </label>
-                        <label class="radio-option">
-                            <input type="radio" name="evalType" value="finale" onchange="updateEvalType()">
-                            <div>
-                                <strong>Évaluation finale (12 pts)</strong>
-                                <div style="font-size: 0.9em; color: var(--gray-700); margin-top: 4px;">
-                                    AFLP1 (Gain matchs - 7 pts) et AFLP2 (Répertoire technique - 5 pts)
-                                </div>
-                            </div>
-                        </label>
-                    </div>
-                </div>
-
-                <div class="card">
-                    <h3>👤 Sélection de l'élève</h3>
-                    <div class="grid">
+                    <h3>➕ Ajouter des élèves</h3>
+                    <div class="form-row">
                         <div class="form-group">
-                            <label for="evalClass">Classe</label>
-                            <select id="evalClass" onchange="updateEvalStudents()">
-                                <option value="">-- Choisir une classe --</option>
+                            <label for="selectClass">Classe</label>
+                            <select id="selectClass"></select>
+                        </div>
+                        <div class="form-group">
+                            <label for="studentName">Nom</label>
+                            <input type="text" id="studentName" placeholder="NOM Prénom">
+                        </div>
+                        <div class="form-group" id="genderGroup" style="display: none;">
+                            <label for="studentGender">Sexe</label>
+                            <select id="studentGender">
+                                <option value="G">Garçon</option>
+                                <option value="F">Fille</option>
                             </select>
                         </div>
-                        <div class="form-group">
-                            <label for="evalStudent">Élève</label>
-                            <select id="evalStudent" onchange="loadStudentEval()">
-                                <option value="">-- Choisir un élève --</option>
-                            </select>
+                        <div style="display: flex; align-items: flex-end;">
+                            <button class="btn btn-primary" onclick="addStudent()">Ajouter</button>
                         </div>
+                    </div>
+                    <div class="form-group" style="margin-top: 10px;">
+                        <label for="bulkStudents">Ajout multiple (un par ligne, format: NOM Prénom ou NOM Prénom G/F)</label>
+                        <textarea id="bulkStudents" rows="3" placeholder="DUPONT Jean G&#10;MARTIN Marie F"></textarea>
+                        <button class="btn btn-secondary btn-small" onclick="addBulkStudents()" style="margin-top: 8px;">Ajouter tous</button>
                     </div>
                 </div>
 
-                <!-- Formulaire évaluation au fil de la séquence -->
-                <div id="sequenceEvalForm" class="evaluation-form">
-                    <h3 style="margin-bottom: 20px; color: var(--primary);">📋 Évaluation au fil de la séquence</h3>
-                    
-                    <div class="alert alert-warning">
-                        <span>⚠️</span>
-                        <div>
-                            <strong>Choix de répartition :</strong> L'élève doit choisir la répartition des points entre AFLP4 et AFLP5 :
-                            <strong>4-4</strong>, <strong>2-6</strong> ou <strong>6-2</strong>
-                        </div>
-                    </div>
-
-                    <div class="eval-section">
-                        <h4>Répartition des points</h4>
-                        <div class="radio-group">
-                            <label class="radio-option">
-                                <input type="radio" name="pointsDistribution" value="4-4" checked onchange="updatePointsDisplay()">
-                                <strong>4-4</strong> (AFLP4: 4 pts / AFLP5: 4 pts)
-                            </label>
-                            <label class="radio-option">
-                                <input type="radio" name="pointsDistribution" value="2-6" onchange="updatePointsDisplay()">
-                                <strong>2-6</strong> (AFLP4: 2 pts / AFLP5: 6 pts)
-                            </label>
-                            <label class="radio-option">
-                                <input type="radio" name="pointsDistribution" value="6-2" onchange="updatePointsDisplay()">
-                                <strong>6-2</strong> (AFLP4: 6 pts / AFLP5: 2 pts)
-                            </label>
-                        </div>
-                    </div>
-
-                    <div class="eval-section">
-                        <h4>AFLP4 - Arbitrer et Observer (<span id="aflp4Points">4</span> points)</h4>
-                        <div class="criteria-detail">
-                            <strong>Critères (2) :</strong><br>
-                            • <strong>1/2</strong> Arbitre (connaissance des règles et application juste) + acceptation des décisions de l'arbitre<br>
-                            • <strong>1/2</strong> Justesse et précision de l'observation
-                        </div>
-                        <div class="degree-selector">
-                            <button class="degree-btn" onclick="selectDegree('aflp4', 1)">
-                                <div class="degree-title">Degré 1</div>
-                                <div class="degree-desc">Respect difficile, manque d'attention</div>
-                                <div style="margin-top: 8px; font-size: 1.2em;">1 pt</div>
-                            </button>
-                            <button class="degree-btn" onclick="selectDegree('aflp4', 2)">
-                                <div class="degree-title">Degré 2</div>
-                                <div class="degree-desc">Respect des règles, quelques hésitations</div>
-                                <div style="margin-top: 8px; font-size: 1.2em;">2 pts</div>
-                            </button>
-                            <button class="degree-btn" onclick="selectDegree('aflp4', 3)">
-                                <div class="degree-title">Degré 3</div>
-                                <div class="degree-desc">Fait respecter, quelques erreurs</div>
-                                <div style="margin-top: 8px; font-size: 1.2em;">3 pts</div>
-                            </button>
-                            <button class="degree-btn" onclick="selectDegree('aflp4', 4)">
-                                <div class="degree-title">Degré 4</div>
-                                <div class="degree-desc">Efficacité totale, aide les autres</div>
-                                <div style="margin-top: 8px; font-size: 1.2em;">4 pts</div>
-                            </button>
-                        </div>
-                    </div>
-
-                    <div class="eval-section">
-                        <h4>AFLP5 - Échauffement et Préparation (<span id="aflp5Points">4</span> points)</h4>
-                        <div class="criteria-detail">
-                            <strong>Critères (2) :</strong><br>
-                            • <strong>1/2</strong> Échauffement général (mobilisations articulaires, échauffement général et déplacements spécifiques)<br>
-                            • <strong>1/2</strong> Échauffement spécifique (préparation en partenariat sur 4 temps avec échanges progressifs et complets)
-                        </div>
-                        <div class="degree-selector">
-                            <button class="degree-btn" onclick="selectDegree('aflp5', 1)">
-                                <div class="degree-title">Degré 1</div>
-                                <div class="degree-desc">Ébauche sans effets réels</div>
-                                <div style="margin-top: 8px; font-size: 1.2em;">1 pt</div>
-                            </button>
-                            <button class="degree-btn" onclick="selectDegree('aflp5', 2)">
-                                <div class="degree-title">Degré 2</div>
-                                <div class="degree-desc">Échauffement global et rapide</div>
-                                <div style="margin-top: 8px; font-size: 1.2em;">2 pts</div>
-                            </button>
-                            <button class="degree-btn" onclick="selectDegree('aflp5', 3)">
-                                <div class="degree-title">Degré 3</div>
-                                <div class="degree-desc">Structuré et progressif</div>
-                                <div style="margin-top: 8px; font-size: 1.2em;">3 pts</div>
-                            </button>
-                            <button class="degree-btn" onclick="selectDegree('aflp5', 4)">
-                                <div class="degree-title">Degré 4</div>
-                                <div class="degree-desc">Autonome et maîtrise complète</div>
-                                <div style="margin-top: 8px; font-size: 1.2em;">4 pts</div>
-                            </button>
-                        </div>
-                    </div>
-
-                    <div style="background: var(--gray-100); padding: 15px; border-radius: 8px; margin-top: 20px;">
-                        <strong>Note totale séquence : <span id="sequenceTotal">0</span> / 8 points</strong>
-                    </div>
-
-                    <div class="actions">
-                        <button class="btn btn-primary" onclick="saveSequenceEval()">💾 Enregistrer l'évaluation</button>
-                        <button class="btn btn-secondary btn-small" onclick="resetSequenceForm()">🔄 Réinitialiser</button>
-                    </div>
-                </div>
-
-                <!-- Formulaire évaluation finale -->
-                <div id="finaleEvalForm" class="evaluation-form" style="display: none;">
-                    <h3 style="margin-bottom: 20px; color: var(--primary);">🏆 Évaluation Finale</h3>
-                    
-                    <div class="eval-section">
-                        <h4>AFLP1 - Gain de matchs en lien avec le lieu de frappes (7 points)</h4>
-                        <div class="criteria-detail">
-                            <strong>Critères (3) :</strong><br>
-                            • <strong>1/3</strong> Gain de matchs<br>
-                            • <strong>1/3</strong> Lieu des points en zone dangereuse (victoire ou défaite avec la manière)<br>
-                            • <strong>1/3</strong> Points gagnants et atteinte des espaces libres
-                        </div>
-                        
-                        <div class="match-results">
-                            <div class="form-group">
-                                <label>Nombre total de matchs joués</label>
-                                <input type="number" id="totalMatches" min="0" value="3" onchange="calculateAFLP1()">
-                            </div>
-                            <div class="form-group">
-                                <label>Nombre de matchs gagnés</label>
-                                <input type="number" id="wonMatches" min="0" value="0" onchange="calculateAFLP1()">
-                            </div>
-                        </div>
-
-                        <div class="degree-selector">
-                            <button class="degree-btn" onclick="selectDegree('aflp1', 1)" id="aflp1-degree1">
-                                <div class="degree-title">Degré 1</div>
-                                <div class="degree-desc">Aucun match gagné</div>
-                                <div style="margin-top: 8px; font-size: 1.2em;">0-1 pt</div>
-                            </button>
-                            <button class="degree-btn" onclick="selectDegree('aflp1', 2)" id="aflp1-degree2">
-                                <div class="degree-title">Degré 2</div>
-                                <div class="degree-desc">1/3 des matchs gagnés</div>
-                                <div style="margin-top: 8px; font-size: 1.2em;">1.5-3 pts</div>
-                            </button>
-                            <button class="degree-btn" onclick="selectDegree('aflp1', 3)" id="aflp1-degree3">
-                                <div class="degree-title">Degré 3</div>
-                                <div class="degree-desc">2/3 des matchs gagnés</div>
-                                <div style="margin-top: 8px; font-size: 1.2em;">3.5-5 pts</div>
-                            </button>
-                            <button class="degree-btn" onclick="selectDegree('aflp1', 4)" id="aflp1-degree4">
-                                <div class="degree-title">Degré 4</div>
-                                <div class="degree-desc">Tous les matchs gagnés</div>
-                                <div style="margin-top: 8px; font-size: 1.2em;">5.5-7 pts</div>
-                            </button>
-                        </div>
-
-                        <div class="form-group" style="margin-top: 15px;">
-                            <label>Note AFLP1 - Ajustez selon les 3 critères (zones dangereuses + espaces libres)</label>
-                            <input type="number" id="aflp1Score" min="0" max="7" step="0.5" value="0" onchange="calculateFinaleTotal()">
-                        </div>
-                    </div>
-
-                    <div class="eval-section">
-                        <h4>AFLP2 - Variété technique et Replacement (5 points)</h4>
-                        <div class="criteria-detail">
-                            <strong>Critères (2) :</strong><br>
-                            • <strong>1/2</strong> Qualité et variété des frappes (service, coup droit, revers, amortis, dégagements)<br>
-                            • <strong>1/2</strong> Replacement après chaque frappe
-                        </div>
-                        <div class="degree-selector">
-                            <button class="degree-btn" onclick="selectDegree('aflp2', 1)">
-                                <div class="degree-title">Degré 1</div>
-                                <div class="degree-desc">Peu de techniques, faible efficacité</div>
-                                <div style="margin-top: 8px; font-size: 1.2em;">0-0.5 pt</div>
-                            </button>
-                            <button class="degree-btn" onclick="selectDegree('aflp2', 2)">
-                                <div class="degree-title">Degré 2</div>
-                                <div class="degree-desc">1-2 techniques préférentielles</div>
-                                <div style="margin-top: 8px; font-size: 1.2em;">1-2 pts</div>
-                            </button>
-                            <button class="degree-btn" onclick="selectDegree('aflp2', 3)">
-                                <div class="degree-title">Degré 3</div>
-                                <div class="degree-desc">Plusieurs techniques efficaces</div>
-                                <div style="margin-top: 8px; font-size: 1.2em;">2.5-4 pts</div>
-                            </button>
-                            <button class="degree-btn" onclick="selectDegree('aflp2', 4)">
-                                <div class="degree-title">Degré 4</div>
-                                <div class="degree-desc">Variété complète et efficace</div>
-                                <div style="margin-top: 8px; font-size: 1.2em;">4.5-5 pts</div>
-                            </button>
-                        </div>
-
-                        <div class="form-group" style="margin-top: 15px;">
-                            <label>Note AFLP2 - Ajustez selon variété ET replacement</label>
-                            <input type="number" id="aflp2Score" min="0" max="5" step="0.5" value="0" onchange="calculateFinaleTotal()">
-                        </div>
-                    </div>
-
-                    <div style="background: var(--gray-100); padding: 15px; border-radius: 8px; margin-top: 20px;">
-                        <strong>Note totale finale : <span id="finaleTotal">0</span> / 12 points</strong>
-                    </div>
-
-                    <div class="actions">
-                        <button class="btn btn-primary" onclick="saveFinaleEval()">💾 Enregistrer l'évaluation</button>
-                        <button class="btn btn-secondary btn-small" onclick="resetFinaleForm()">🔄 Réinitialiser</button>
-                    </div>
-                </div>
+                <div id="classesList"></div>
             </div>
 
-            <!-- TAB: Résultats -->
+            <!-- TAB: Sequence -->
+            <div id="tab-sequence" class="tab-content">
+                <div class="card">
+                    <h3 id="seqTitle">📋 Évaluation au fil de la séquence (8 points)</h3>
+                    <p id="seqDesc" style="color: var(--gray-600); margin-bottom: 16px;"></p>
+                    <div class="form-row">
+                        <div class="form-group" style="max-width: 300px;">
+                            <label for="seqClass">Classe</label>
+                            <select id="seqClass" onchange="loadSequenceGrid()"></select>
+                        </div>
+                    </div>
+                </div>
+                <div id="sequenceEvalContainer"></div>
+            </div>
+
+            <!-- TAB: Finale -->
+            <div id="tab-finale" class="tab-content">
+                <div class="card">
+                    <h3 id="finTitle">🏆 Évaluation finale (12 points)</h3>
+                    <p id="finDesc" style="color: var(--gray-600); margin-bottom: 16px;"></p>
+                    <div class="form-row">
+                        <div class="form-group" style="max-width: 300px;">
+                            <label for="finClass">Classe</label>
+                            <select id="finClass" onchange="loadFinaleGrid()"></select>
+                        </div>
+                    </div>
+                </div>
+                <div id="finaleEvalContainer"></div>
+            </div>
+
+            <!-- TAB: Results -->
             <div id="tab-results" class="tab-content">
                 <div class="card">
-                    <h3>📊 Statistiques générales</h3>
+                    <h3>📊 Statistiques</h3>
                     <div class="stats-grid" id="statsGrid"></div>
                 </div>
-
                 <div class="card">
                     <h3>🎯 Résultats par classe</h3>
-                    <div class="form-group">
-                        <label for="resultsClass">Sélectionner une classe</label>
-                        <select id="resultsClass" onchange="displayResults()">
-                            <option value="">-- Toutes les classes --</option>
-                        </select>
+                    <div class="form-group" style="max-width: 300px;">
+                        <select id="resultsClass" onchange="displayResults()"></select>
                     </div>
                     <div id="resultsDisplay"></div>
                 </div>
@@ -811,36 +581,1069 @@
             <!-- TAB: Export -->
             <div id="tab-export" class="tab-content">
                 <div class="card">
-                    <h3>💾 Exporter les données</h3>
-                    <p style="margin-bottom: 20px; color: var(--gray-700);">
-                        Exportez les évaluations de vos élèves au format CSV pour les utiliser dans un tableur.
-                    </p>
+                    <h3>💾 Exporter</h3>
                     <div class="actions">
-                        <button class="btn btn-primary" onclick="exportToCSV()">📥 Télécharger CSV</button>
-                        <button class="btn btn-secondary" onclick="exportJSON()">📥 Télécharger JSON (backup)</button>
+                        <button class="btn btn-primary" onclick="exportToCSV()">📥 CSV (Excel)</button>
+                        <button class="btn btn-secondary" onclick="exportJSON()">📥 JSON (Backup)</button>
                     </div>
                 </div>
-
                 <div class="card">
-                    <h3>🔄 Importer des données</h3>
-                    <p style="margin-bottom: 20px; color: var(--gray-700);">
-                        Restaurez une sauvegarde JSON complète.
-                    </p>
+                    <h3>🔄 Importer</h3>
                     <input type="file" id="importFile" accept=".json" style="margin-bottom: 15px;">
-                    <button class="btn btn-secondary" onclick="importJSON()">📤 Importer JSON</button>
+                    <button class="btn btn-secondary" onclick="importJSON()">📤 Importer</button>
                 </div>
-
                 <div class="card">
-                    <h3>⚠️ Gestion des données</h3>
-                    <p style="margin-bottom: 20px; color: var(--gray-700);">
-                        Attention : Cette action supprimera toutes les données stockées localement.
-                    </p>
-                    <button class="btn btn-danger" onclick="clearAllData()">🗑️ Supprimer toutes les données</button>
+                    <h3>⚠️ Supprimer</h3>
+                    <button class="btn btn-danger" onclick="clearAllData()">🗑️ Tout supprimer</button>
                 </div>
             </div>
         </div>
     </div>
 
-    <script src="app.js"></script>
+<script>
+// ===== CONFIGURATION DES ACTIVITÉS =====
+const ACTIVITIES = {
+    badminton: {
+        name: "Badminton",
+        icon: "🏸",
+        ca: "CA4",
+        seqAFLPs: ['aflp4', 'aflp5'],
+        finAFLPs: ['aflp1', 'aflp2'],
+        needsGender: false,
+        criteria: {
+            aflp1: {
+                name: "AFLP1 - Gain de matchs",
+                maxBase: 7,
+                criteria: [
+                    {
+                        id: "gain", name: "Gain de matchs", weight: 1/3,
+                        levels: [
+                            { level: 1, desc: "Aucun match gagné, adaptations aléatoires", points: "0-0.5 pt" },
+                            { level: 2, desc: "1/3 des matchs gagnés, quelques adaptations", points: "0.5-1 pt" },
+                            { level: 3, desc: "2/3 des matchs gagnés, adaptations régulières", points: "1-1.5 pts" },
+                            { level: 4, desc: "Tous les matchs gagnés, adaptations permanentes", points: "1.5-2.3 pts" }
+                        ]
+                    },
+                    {
+                        id: "zone", name: "Points en zones dangereuses", weight: 1/3,
+                        levels: [
+                            { level: 1, desc: "Aucun point près des lignes, frappes au centre", points: "0-0.5 pt" },
+                            { level: 2, desc: "Quelques points près des lignes", points: "0.5-1 pt" },
+                            { level: 3, desc: "Points réguliers en zones dangereuses", points: "1-1.5 pts" },
+                            { level: 4, desc: "Majorité des points en zones dangereuses", points: "1.5-2.3 pts" }
+                        ]
+                    },
+                    {
+                        id: "espace", name: "Points gagnants / espaces libres", weight: 1/3,
+                        levels: [
+                            { level: 1, desc: "Ne cherche pas les espaces, joue sur l'adversaire", points: "0-0.5 pt" },
+                            { level: 2, desc: "Identifie parfois les espaces libres", points: "0.5-1 pt" },
+                            { level: 3, desc: "Exploitation régulière des espaces", points: "1-1.5 pts" },
+                            { level: 4, desc: "Crée et exploite systématiquement les espaces", points: "1.5-2.3 pts" }
+                        ]
+                    }
+                ]
+            },
+            aflp2: {
+                name: "AFLP2 - Variété technique",
+                maxBase: 5,
+                criteria: [
+                    {
+                        id: "variete", name: "Qualité et variété des frappes", weight: 0.5,
+                        levels: [
+                            { level: 1, desc: "1-2 types de frappes, faible efficacité", points: "0-0.5 pt" },
+                            { level: 2, desc: "2-3 techniques utilisées", points: "0.5-1.25 pts" },
+                            { level: 3, desc: "Plusieurs techniques maîtrisées (4+)", points: "1.25-2 pts" },
+                            { level: 4, desc: "Répertoire complet, grande efficacité", points: "2-2.5 pts" }
+                        ]
+                    },
+                    {
+                        id: "replacement", name: "Replacement après frappe", weight: 0.5,
+                        levels: [
+                            { level: 1, desc: "Pas de replacement, reste sur place", points: "0-0.5 pt" },
+                            { level: 2, desc: "Replacement occasionnel, en retard", points: "0.5-1.25 pts" },
+                            { level: 3, desc: "Replacement régulier, bonne anticipation", points: "1.25-2 pts" },
+                            { level: 4, desc: "Replacement systématique et rapide", points: "2-2.5 pts" }
+                        ]
+                    }
+                ]
+            },
+            aflp4: {
+                name: "AFLP4 - Arbitrer et Observer",
+                maxBase: 4,
+                criteria: [
+                    {
+                        id: "arbitrage", name: "Arbitrage & Respect des règles", weight: 0.5,
+                        levels: [
+                            { level: 1, desc: "Respecte difficilement, conteste", points: "0.5 pt" },
+                            { level: 2, desc: "Respect sans grande rigueur", points: "1 pt" },
+                            { level: 3, desc: "Arbitre correctement, accepte les décisions", points: "1.5 pts" },
+                            { level: 4, desc: "Maîtrise complète de l'arbitrage", points: "2 pts" }
+                        ]
+                    },
+                    {
+                        id: "observation", name: "Précision de l'observation", weight: 0.5,
+                        levels: [
+                            { level: 1, desc: "Observation imprécise", points: "0.5 pt" },
+                            { level: 2, desc: "Observation basique", points: "1 pt" },
+                            { level: 3, desc: "Observation précise, identifie points forts/faibles", points: "1.5 pts" },
+                            { level: 4, desc: "Observation experte, conseils pertinents", points: "2 pts" }
+                        ]
+                    }
+                ]
+            },
+            aflp5: {
+                name: "AFLP5 - Échauffement",
+                maxBase: 4,
+                criteria: [
+                    {
+                        id: "general", name: "Échauffement général", weight: 0.5,
+                        levels: [
+                            { level: 1, desc: "Ébauche sans effets réels", points: "0.5 pt" },
+                            { level: 2, desc: "Échauffement global et rapide", points: "1 pt" },
+                            { level: 3, desc: "Structuré et progressif", points: "1.5 pts" },
+                            { level: 4, desc: "Autonome et complet", points: "2 pts" }
+                        ]
+                    },
+                    {
+                        id: "specifique", name: "Échauffement spécifique", weight: 0.5,
+                        levels: [
+                            { level: 1, desc: "Pas de préparation spécifique", points: "0.5 pt" },
+                            { level: 2, desc: "Quelques échanges simples", points: "1 pt" },
+                            { level: 3, desc: "Échanges progressifs en 4 temps", points: "1.5 pts" },
+                            { level: 4, desc: "Préparation complète et autonome", points: "2 pts" }
+                        ]
+                    }
+                ]
+            }
+        }
+    },
+    relais: {
+        name: "Relais Vitesse",
+        icon: "🏃",
+        ca: "CA1",
+        seqAFLPs: ['aflp3', 'aflp5'],
+        finAFLPs: ['aflp1', 'aflp2'],
+        needsGender: true,
+        criteria: {
+            aflp1: {
+                name: "AFLP1 - Performance et gain de vitesse",
+                maxBase: 7,
+                criteria: [
+                    {
+                        id: "vitesse", name: "Vitesse (barème G/F)", weight: 0.5,
+                        description: "G: D1=17-18 D2=20-22 D3=23-24 D4=26-28 km/h | F: D1=14-16 D2=18-20 D3=21-22 D4=23-25 km/h",
+                        levels: [
+                            { level: 1, desc: "G: 17-18 km/h | F: 14-16 km/h", points: "0-1 pt" },
+                            { level: 2, desc: "G: 20-22 km/h | F: 18-20 km/h", points: "2-3 pts" },
+                            { level: 3, desc: "G: 23-24 km/h | F: 21-22 km/h", points: "4-5 pts" },
+                            { level: 4, desc: "G: 26-28 km/h | F: 23-25 km/h", points: "6-7 pts" }
+                        ]
+                    },
+                    {
+                        id: "gain", name: "Gain de vitesse (relais vs départ arrêté)", weight: 0.5,
+                        description: "Différence entre vitesse relais et vitesse individuelle",
+                        levels: [
+                            { level: 1, desc: "+0 à +0.5 km/h de gain", points: "0-1 pt" },
+                            { level: 2, desc: "+0.5 à +1 km/h de gain", points: "2-3 pts" },
+                            { level: 3, desc: "+1.5 à +2 km/h de gain", points: "4-5 pts" },
+                            { level: 4, desc: "+2 à +2.5 km/h de gain", points: "6-7 pts" }
+                        ]
+                    }
+                ]
+            },
+            aflp2: {
+                name: "AFLP2 - Transmission du témoin",
+                maxBase: 5,
+                criteria: [
+                    {
+                        id: "technique", name: "Technique de transmission", weight: 0.5,
+                        levels: [
+                            { level: 1, desc: "Technique inadaptée, non anticipée, arrêt", points: "0-0.5 pt" },
+                            { level: 2, desc: "Technique aléatoire, dissociation difficile", points: "1-2 pts" },
+                            { level: 3, desc: "Technique efficace, bonne dissociation regard/main", points: "2.5-4 pts" },
+                            { level: 4, desc: "Technique efficace et rapide au signal convenu", points: "4.5-5 pts" }
+                        ]
+                    },
+                    {
+                        id: "zone", name: "Utilisation de la zone", weight: 0.5,
+                        levels: [
+                            { level: 1, desc: "Transmission hors zone ou à l'arrêt", points: "0-0.5 pt" },
+                            { level: 2, desc: "Transmission en fin de zone, ralentissement", points: "1-2 pts" },
+                            { level: 3, desc: "Transmission au milieu de zone, vitesse maintenue", points: "2.5-4 pts" },
+                            { level: 4, desc: "Transmission optimale, pleine vitesse", points: "4.5-5 pts" }
+                        ]
+                    }
+                ]
+            },
+            aflp3: {
+                name: "AFLP3 - Engagement et persévérance",
+                maxBase: 4,
+                criteria: [
+                    {
+                        id: "participation", name: "Participation aux séances", weight: 0.5,
+                        levels: [
+                            { level: 1, desc: "Séances entières non faites", points: "0.5 pt" },
+                            { level: 2, desc: "Participation parfois aléatoire", points: "1 pt" },
+                            { level: 3, desc: "Participation satisfaisante", points: "1.5 pts" },
+                            { level: 4, desc: "Participation régulière et complète", points: "2 pts" }
+                        ]
+                    },
+                    {
+                        id: "intensite", name: "Intensité de l'engagement", weight: 0.5,
+                        levels: [
+                            { level: 1, desc: "Ne peut pas répéter les efforts", points: "0.5 pt" },
+                            { level: 2, desc: "Difficulté à maintenir l'intensité", points: "1 pt" },
+                            { level: 3, desc: "Capable de mettre de l'intensité régulièrement", points: "1.5 pts" },
+                            { level: 4, desc: "Engagement collectif constant et communicatif", points: "2 pts" }
+                        ]
+                    }
+                ]
+            },
+            aflp5: {
+                name: "AFLP5 - Échauffement",
+                maxBase: 4,
+                criteria: [
+                    {
+                        id: "structure", name: "Structure de l'échauffement", weight: 0.5,
+                        levels: [
+                            { level: 1, desc: "Ébauche sans effets réels", points: "0.5 pt" },
+                            { level: 2, desc: "Échauffement global et rapide", points: "1 pt" },
+                            { level: 3, desc: "Structuré en différentes étapes avec guidance", points: "1.5 pts" },
+                            { level: 4, desc: "Structuré et complet de manière autonome", points: "2 pts" }
+                        ]
+                    },
+                    {
+                        id: "specifique", name: "Préparation spécifique sprint", weight: 0.5,
+                        levels: [
+                            { level: 1, desc: "Pas de gammes athlétiques", points: "0.5 pt" },
+                            { level: 2, desc: "Quelques gammes approximatives", points: "1 pt" },
+                            { level: 3, desc: "Gammes progressives et adaptées", points: "1.5 pts" },
+                            { level: 4, desc: "Routine complète avec accélérations progressives", points: "2 pts" }
+                        ]
+                    }
+                ]
+            }
+        }
+    },
+    musculation: {
+        name: "Musculation",
+        icon: "💪",
+        ca: "CA5",
+        seqAFLPs: ['aflp4', 'aflp5'],
+        finAFLPs: ['aflp1', 'aflp2'],
+        needsGender: false,
+        criteria: {
+            aflp1: {
+                name: "AFLP1 - Motricité spécifique",
+                maxBase: 7,
+                criteria: [
+                    {
+                        id: "parametres", name: "Maîtrise des paramètres du mouvement", weight: 0.5,
+                        description: "Placement, amplitude, trajet moteur, respiration",
+                        levels: [
+                            { level: 1, desc: "Maîtrise partielle des paramètres, exécution approximative", points: "0-1 pt" },
+                            { level: 2, desc: "Maîtrise aléatoire, quelques erreurs techniques", points: "1.5-3 pts" },
+                            { level: 3, desc: "Maîtrise de tous les paramètres du mouvement", points: "3.5-5 pts" },
+                            { level: 4, desc: "Maîtrise parfaite avec rythme et fluidité", points: "5.5-7 pts" }
+                        ]
+                    },
+                    {
+                        id: "respiration", name: "Coordination et respiration", weight: 0.5,
+                        levels: [
+                            { level: 1, desc: "Respiration anarchique, apnée fréquente", points: "0-1 pt" },
+                            { level: 2, desc: "Respiration parfois coordonnée", points: "1.5-3 pts" },
+                            { level: 3, desc: "Respiration coordonnée au mouvement", points: "3.5-5 pts" },
+                            { level: 4, desc: "Respiration optimale, rythme maîtrisé", points: "5.5-7 pts" }
+                        ]
+                    }
+                ]
+            },
+            aflp2: {
+                name: "AFLP2 - Ressentis et charge de travail",
+                maxBase: 5,
+                criteria: [
+                    {
+                        id: "ressentis", name: "Identification des ressentis", weight: 0.5,
+                        levels: [
+                            { level: 1, desc: "Ressentis ne correspondent pas à la réalité", points: "0-0.5 pt" },
+                            { level: 2, desc: "Relève de façon formelle, ne se sert pas des infos", points: "1-2 pts" },
+                            { level: 3, desc: "Identifie ses ressentis avec vocabulaire adapté", points: "2.5-4 pts" },
+                            { level: 4, desc: "Identifie avec précision (champ lexical spécifique)", points: "4.5-5 pts" }
+                        ]
+                    },
+                    {
+                        id: "regulation", name: "Régulation de la charge", weight: 0.5,
+                        levels: [
+                            { level: 1, desc: "Ne régule pas sa charge de travail", points: "0-0.5 pt" },
+                            { level: 2, desc: "Régulation aléatoire", points: "1-2 pts" },
+                            { level: 3, desc: "Régule en fonction des ressentis", points: "2.5-4 pts" },
+                            { level: 4, desc: "Régulation fine et argumentée", points: "4.5-5 pts" }
+                        ]
+                    }
+                ]
+            },
+            aflp4: {
+                name: "AFLP4 - Coach / Observateur",
+                maxBase: 4,
+                criteria: [
+                    {
+                        id: "securite", name: "Parade et sécurité", weight: 0.5,
+                        levels: [
+                            { level: 1, desc: "Ne se sent pas concerné par la sécurité", points: "0.5 pt" },
+                            { level: 2, desc: "Sécurise de manière imprécise", points: "1 pt" },
+                            { level: 3, desc: "Pare activement et régulièrement", points: "1.5 pts" },
+                            { level: 4, desc: "Anticipe les situations à risque", points: "2 pts" }
+                        ]
+                    },
+                    {
+                        id: "conseil", name: "Observation et conseils", weight: 0.5,
+                        levels: [
+                            { level: 1, desc: "N'observe pas, pas de retour", points: "0.5 pt" },
+                            { level: 2, desc: "Observation imprécise, retours vagues", points: "1 pt" },
+                            { level: 3, desc: "Observe et donne des retours pertinents", points: "1.5 pts" },
+                            { level: 4, desc: "Coaching expert, conseils personnalisés", points: "2 pts" }
+                        ]
+                    }
+                ]
+            },
+            aflp5: {
+                name: "AFLP5 - Engagement et intensité",
+                maxBase: 4,
+                criteria: [
+                    {
+                        id: "regularite", name: "Régularité de l'entraînement", weight: 0.5,
+                        levels: [
+                            { level: 1, desc: "S'entraîne de façon sporadique", points: "0.5 pt" },
+                            { level: 2, desc: "S'entraîne mais pas assez de temps de travail effectif", points: "1 pt" },
+                            { level: 3, desc: "S'entraîne à chaque séance pour ajuster sa charge", points: "1.5 pts" },
+                            { level: 4, desc: "S'entraîne à chaque séance avec intention de progrès", points: "2 pts" }
+                        ]
+                    },
+                    {
+                        id: "charge", name: "Mobilisation de la charge optimale", weight: 0.5,
+                        levels: [
+                            { level: 1, desc: "Mobilise faiblement les ressources", points: "0.5 pt" },
+                            { level: 2, desc: "Mobilise partiellement ses ressources", points: "1 pt" },
+                            { level: 3, desc: "Travaille à charge optimale selon l'objectif", points: "1.5 pts" },
+                            { level: 4, desc: "Cherche constamment à progresser", points: "2 pts" }
+                        ]
+                    }
+                ]
+            }
+        }
+    }
+};
+
+const REPARTITIONS = [
+    { label: "4/4", coef1: 1, coef2: 1 },
+    { label: "2/6", coef1: 0.5, coef2: 1.5 },
+    { label: "6/2", coef1: 1.5, coef2: 0.5 }
+];
+
+// ===== STATE =====
+let currentActivity = 'badminton';
+
+// ===== DATA MANAGER =====
+class DataManager {
+    constructor() {
+        this.storageKey = 'eps_eval_multi_v1';
+        this.data = this.loadData();
+    }
+
+    loadData() {
+        const stored = localStorage.getItem(this.storageKey);
+        return stored ? JSON.parse(stored) : { classes: [], students: [], evaluations: {}, version: '1.0' };
+    }
+
+    saveData() { localStorage.setItem(this.storageKey, JSON.stringify(this.data)); }
+
+    addClass(name) {
+        const id = 'c_' + Date.now();
+        this.data.classes.push({ id, name });
+        this.saveData();
+        return id;
+    }
+
+    getClasses() { return this.data.classes; }
+
+    deleteClass(id) {
+        this.data.classes = this.data.classes.filter(c => c.id !== id);
+        const sids = this.data.students.filter(s => s.classId === id).map(s => s.id);
+        this.data.students = this.data.students.filter(s => s.classId !== id);
+        sids.forEach(sid => delete this.data.evaluations[sid]);
+        this.saveData();
+    }
+
+    addStudent(classId, name, gender = 'G') {
+        const id = 's_' + Date.now() + '_' + Math.random().toString(36).substr(2, 4);
+        this.data.students.push({ id, classId, name, gender, repartition: {} });
+        this.data.evaluations[id] = {};
+        this.saveData();
+        return id;
+    }
+
+    getStudentsByClass(classId) { return this.data.students.filter(s => s.classId === classId); }
+    getAllStudents() { return this.data.students; }
+    getStudent(id) { return this.data.students.find(s => s.id === id); }
+
+    deleteStudent(id) {
+        this.data.students = this.data.students.filter(s => s.id !== id);
+        delete this.data.evaluations[id];
+        this.saveData();
+    }
+
+    setRepartition(studentId, activity, rep) {
+        const s = this.getStudent(studentId);
+        if (s) {
+            if (!s.repartition) s.repartition = {};
+            s.repartition[activity] = rep;
+            this.saveData();
+        }
+    }
+
+    getRepartition(studentId, activity) {
+        const s = this.getStudent(studentId);
+        return s?.repartition?.[activity] || 0;
+    }
+
+    setEval(studentId, activity, aflp, criterion, level, customScore = null) {
+        if (!this.data.evaluations[studentId]) this.data.evaluations[studentId] = {};
+        if (!this.data.evaluations[studentId][activity]) this.data.evaluations[studentId][activity] = {};
+        if (!this.data.evaluations[studentId][activity][aflp]) this.data.evaluations[studentId][activity][aflp] = {};
+        
+        // Store both level and custom score
+        this.data.evaluations[studentId][activity][aflp][criterion] = {
+            level: level,
+            score: customScore
+        };
+        this.saveData();
+    }
+
+    setEvalScore(studentId, activity, aflp, criterion, score) {
+        if (!this.data.evaluations[studentId]?.[activity]?.[aflp]?.[criterion]) return;
+        this.data.evaluations[studentId][activity][aflp][criterion].score = score;
+        this.saveData();
+    }
+
+    getEval(studentId, activity, aflp) {
+        return this.data.evaluations[studentId]?.[activity]?.[aflp] || {};
+    }
+
+    getEvalLevel(studentId, activity, aflp, criterion) {
+        const evalData = this.getEval(studentId, activity, aflp)[criterion];
+        if (!evalData) return 0;
+        // Support old format (just number) and new format (object)
+        if (typeof evalData === 'number') return evalData;
+        return evalData.level || 0;
+    }
+
+    getEvalScore(studentId, activity, aflp, criterion, criterionConfig, aflpMaxBase) {
+        const evalData = this.getEval(studentId, activity, aflp)[criterion];
+        if (!evalData) return 0;
+        
+        // Support old format (just number)
+        if (typeof evalData === 'number') {
+            return evalData * criterionConfig.weight * (aflpMaxBase / 4);
+        }
+        
+        // New format with custom score
+        if (evalData.score !== null && evalData.score !== undefined) {
+            return evalData.score;
+        }
+        
+        // Default calculation based on level
+        const level = evalData.level || 0;
+        return level * criterionConfig.weight * (aflpMaxBase / 4);
+    }
+
+    calcAFLPScore(studentId, activity, aflpKey, isSequence = false, aflpIndex = 0) {
+        const actConfig = ACTIVITIES[activity];
+        const config = actConfig.criteria[aflpKey];
+        if (!config) return 0;
+
+        let score = 0;
+
+        config.criteria.forEach(criterion => {
+            score += this.getEvalScore(studentId, activity, aflpKey, criterion.id, criterion, config.maxBase);
+        });
+
+        // Apply coefficient for sequence AFLPs
+        if (isSequence) {
+            const rep = this.getRepartition(studentId, activity);
+            const coef = aflpIndex === 0 ? REPARTITIONS[rep].coef1 : REPARTITIONS[rep].coef2;
+            score = score * coef;
+        }
+
+        return Math.round(score * 10) / 10;
+    }
+
+    getSeqScore(studentId, activity) {
+        const actConfig = ACTIVITIES[activity];
+        let total = 0;
+        actConfig.seqAFLPs.forEach((aflp, i) => {
+            total += this.calcAFLPScore(studentId, activity, aflp, true, i);
+        });
+        return Math.round(total * 10) / 10;
+    }
+
+    getFinScore(studentId, activity) {
+        const actConfig = ACTIVITIES[activity];
+        let total = 0;
+        actConfig.finAFLPs.forEach(aflp => {
+            total += this.calcAFLPScore(studentId, activity, aflp, false);
+        });
+        return Math.round(total * 10) / 10;
+    }
+
+    getTotalScore(studentId, activity) {
+        return Math.round((this.getSeqScore(studentId, activity) + this.getFinScore(studentId, activity)) * 10) / 10;
+    }
+
+    clearAll() {
+        if (confirm('⚠️ Supprimer TOUTES les données ?')) {
+            localStorage.removeItem(this.storageKey);
+            location.reload();
+        }
+    }
+
+    exportJSON() { return JSON.stringify(this.data, null, 2); }
+
+    importJSON(json) {
+        try {
+            const d = JSON.parse(json);
+            if (d.classes && d.students) {
+                this.data = d;
+                this.saveData();
+                return true;
+            }
+        } catch (e) {}
+        return false;
+    }
+}
+
+const dm = new DataManager();
+
+// ===== ACTIVITY SELECTION =====
+function selectActivity(activity) {
+    currentActivity = activity;
+    document.body.className = activity;
+    
+    // Update active button using data-activity
+    document.querySelectorAll('.activity-btn').forEach(btn => {
+        btn.classList.remove('active');
+        if (btn.dataset.activity === activity) {
+            btn.classList.add('active');
+        }
+    });
+
+    // Update gender field visibility
+    const genderGroup = document.getElementById('genderGroup');
+    if (genderGroup) {
+        genderGroup.style.display = ACTIVITIES[activity].needsGender ? 'block' : 'none';
+    }
+
+    // Update descriptions
+    const actConfig = ACTIVITIES[activity];
+    const seqDesc = document.getElementById('seqDesc');
+    const finDesc = document.getElementById('finDesc');
+    
+    if (seqDesc && actConfig.criteria[actConfig.seqAFLPs[0]] && actConfig.criteria[actConfig.seqAFLPs[1]]) {
+        seqDesc.textContent = `${actConfig.criteria[actConfig.seqAFLPs[0]].name} + ${actConfig.criteria[actConfig.seqAFLPs[1]].name}`;
+    }
+    if (finDesc && actConfig.criteria[actConfig.finAFLPs[0]] && actConfig.criteria[actConfig.finAFLPs[1]]) {
+        finDesc.textContent = `${actConfig.criteria[actConfig.finAFLPs[0]].name} + ${actConfig.criteria[actConfig.finAFLPs[1]].name}`;
+    }
+
+    // Clear and refresh evaluation containers
+    // Refresh views
+    updateClassesList();
+    updateAllSelects();
+    
+    // Reload grids if a class is already selected
+    const seqClass = document.getElementById('seqClass');
+    const finClass = document.getElementById('finClass');
+    
+    if (seqClass && seqClass.value) {
+        loadSequenceGrid();
+    } else {
+        document.getElementById('sequenceEvalContainer').innerHTML = '<div class="empty-state">Sélectionnez une classe</div>';
+    }
+    
+    if (finClass && finClass.value) {
+        loadFinaleGrid();
+    } else {
+        document.getElementById('finaleEvalContainer').innerHTML = '<div class="empty-state">Sélectionnez une classe</div>';
+    }
+}
+
+// ===== UI FUNCTIONS =====
+function switchTab(tabName) {
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+    
+    // Find and activate the clicked tab
+    document.querySelectorAll('.tab').forEach(t => {
+        if (t.getAttribute('onclick')?.includes(tabName)) {
+            t.classList.add('active');
+        }
+    });
+    
+    document.getElementById('tab-' + tabName).classList.add('active');
+
+    updateAllSelects();
+    if (tabName === 'classes') updateClassesList();
+    else if (tabName === 'results') { displayStats(); displayResults(); }
+}
+
+function addClass() {
+    const name = document.getElementById('className').value.trim();
+    if (!name) return alert('Entrez un nom');
+    dm.addClass(name);
+    document.getElementById('className').value = '';
+    updateClassesList();
+    updateAllSelects();
+    showNotification('Classe créée !');
+}
+
+function addStudent() {
+    const classId = document.getElementById('selectClass').value;
+    const name = document.getElementById('studentName').value.trim();
+    const gender = document.getElementById('studentGender').value;
+    if (!classId) return alert('Choisissez une classe');
+    if (!name) return alert('Entrez un nom');
+    dm.addStudent(classId, name, gender);
+    document.getElementById('studentName').value = '';
+    updateClassesList();
+    showNotification('Élève ajouté !');
+}
+
+function addBulkStudents() {
+    const classId = document.getElementById('selectClass').value;
+    const lines = document.getElementById('bulkStudents').value.split('\n').filter(l => l.trim());
+    if (!classId) return alert('Choisissez une classe');
+    if (!lines.length) return alert('Entrez des noms');
+
+    lines.forEach(line => {
+        const parts = line.trim().split(/\s+/);
+        let gender = 'G';
+        let name = line.trim();
+        
+        if (parts.length > 1) {
+            const last = parts[parts.length - 1].toUpperCase();
+            if (last === 'G' || last === 'F') {
+                gender = last;
+                name = parts.slice(0, -1).join(' ');
+            }
+        }
+        dm.addStudent(classId, name, gender);
+    });
+
+    document.getElementById('bulkStudents').value = '';
+    updateClassesList();
+    showNotification(`${lines.length} élève(s) ajouté(s) !`);
+}
+
+function deleteClass(id) {
+    if (confirm('Supprimer cette classe ?')) {
+        dm.deleteClass(id);
+        updateClassesList();
+        updateAllSelects();
+    }
+}
+
+function deleteStudent(id) {
+    if (confirm('Supprimer ?')) {
+        dm.deleteStudent(id);
+        updateClassesList();
+    }
+}
+
+function updateClassesList() {
+    const classes = dm.getClasses();
+    const container = document.getElementById('classesList');
+    const actConfig = ACTIVITIES[currentActivity];
+
+    if (!classes.length) {
+        container.innerHTML = '<div class="empty-state">Aucune classe</div>';
+        return;
+    }
+
+    container.innerHTML = classes.map(c => {
+        const students = dm.getStudentsByClass(c.id);
+        return `
+            <div class="card">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+                    <h3 style="margin: 0;">${c.name}</h3>
+                    <button class="btn btn-danger btn-small" onclick="deleteClass('${c.id}')">🗑️</button>
+                </div>
+                <p style="color: var(--gray-600); margin-bottom: 12px;">${students.length} élève(s)</p>
+                ${students.length ? `
+                    <ul class="student-list">
+                        ${students.map(s => `
+                            <li class="student-item">
+                                <div class="student-info">
+                                    <div class="student-name-display">${s.name} ${actConfig.needsGender ? `(${s.gender})` : ''}</div>
+                                    <div class="student-score">${actConfig.name}: ${dm.getTotalScore(s.id, currentActivity)}/20</div>
+                                </div>
+                                <div style="display: flex; gap: 8px; align-items: center;">
+                                    <span class="note-badge">${dm.getTotalScore(s.id, currentActivity)}</span>
+                                    <button class="btn btn-danger btn-small" onclick="deleteStudent('${s.id}')">🗑️</button>
+                                </div>
+                            </li>
+                        `).join('')}
+                    </ul>
+                ` : ''}
+            </div>
+        `;
+    }).join('');
+}
+
+// ===== EVALUATION GRIDS =====
+function loadSequenceGrid() {
+    const classId = document.getElementById('seqClass').value;
+    const container = document.getElementById('sequenceEvalContainer');
+    if (!classId) { container.innerHTML = '<div class="empty-state">Sélectionnez une classe</div>'; return; }
+
+    const students = dm.getStudentsByClass(classId);
+    if (!students.length) { container.innerHTML = '<div class="empty-state">Aucun élève</div>'; return; }
+
+    const actConfig = ACTIVITIES[currentActivity];
+    let html = actConfig.seqAFLPs.map((aflp, i) => renderAFLPSection(aflp, students, true, i)).join('');
+    html += `<div class="actions" style="justify-content: center;"><button class="btn btn-success" onclick="showNotification('Sauvegardé !')">💾 Données sauvegardées automatiquement</button></div>`;
+    container.innerHTML = html;
+}
+
+function loadFinaleGrid() {
+    const classId = document.getElementById('finClass').value;
+    const container = document.getElementById('finaleEvalContainer');
+    if (!classId) { container.innerHTML = '<div class="empty-state">Sélectionnez une classe</div>'; return; }
+
+    const students = dm.getStudentsByClass(classId);
+    if (!students.length) { container.innerHTML = '<div class="empty-state">Aucun élève</div>'; return; }
+
+    const actConfig = ACTIVITIES[currentActivity];
+    let html = actConfig.finAFLPs.map(aflp => renderAFLPSection(aflp, students, false)).join('');
+    html += `<div class="actions" style="justify-content: center;"><button class="btn btn-success" onclick="showNotification('Sauvegardé !')">💾 Données sauvegardées automatiquement</button></div>`;
+    container.innerHTML = html;
+}
+
+function renderAFLPSection(aflpKey, students, isSequence, aflpIndex = 0) {
+    const actConfig = ACTIVITIES[currentActivity];
+    const config = actConfig.criteria[aflpKey];
+
+    let html = `
+        <div class="aflp-section">
+            <div class="aflp-header">
+                <h4>${config.name}</h4>
+                <span class="points-badge">${config.maxBase} pts${isSequence ? ' (base)' : ''}</span>
+            </div>
+            <div class="aflp-body">
+    `;
+
+    // Criteria descriptions
+    config.criteria.forEach(criterion => {
+        html += `
+            <div class="criterion-block">
+                <div class="criterion-header">
+                    <span>${criterion.name}</span>
+                    <span class="weight-badge">${Math.round(criterion.weight * 100)}%</span>
+                </div>
+                ${criterion.description ? `<div class="criterion-desc">${criterion.description}</div>` : ''}
+                <div class="criterion-levels">
+                    ${criterion.levels.map(l => `
+                        <div class="level-card l${l.level}">
+                            <div class="level-number">${l.level}</div>
+                            <div class="level-desc">${l.desc}</div>
+                            <div class="level-points">${l.points}</div>
+                        </div>
+                    `).join('')}
+                </div>
+            </div>
+        `;
+    });
+
+    // Evaluation table
+    html += `
+        <h4 style="margin: 16px 0 10px;">📝 Saisie</h4>
+        <div class="eval-grid">
+            <table class="eval-table">
+                <thead>
+                    <tr>
+                        <th>Élève</th>
+                        ${isSequence && aflpIndex === 0 ? '<th>Répart.</th>' : ''}
+                        ${config.criteria.map(c => `<th class="sub">${c.name.split(' ')[0]}<br><small>Niveau + Note</small></th>`).join('')}
+                        <th>Score</th>
+                    </tr>
+                </thead>
+                <tbody>
+    `;
+
+    students.forEach(student => {
+        const score = dm.calcAFLPScore(student.id, currentActivity, aflpKey, isSequence, aflpIndex);
+
+        html += `<tr><td class="student-name">${student.name}</td>`;
+
+        if (isSequence && aflpIndex === 0) {
+            const rep = dm.getRepartition(student.id, currentActivity);
+            html += `<td><select class="repartition-select" onchange="setRep('${student.id}', this.value)">
+                ${REPARTITIONS.map((r, i) => `<option value="${i}" ${rep === i ? 'selected' : ''}>${r.label}</option>`).join('')}
+            </select></td>`;
+        }
+
+        config.criteria.forEach((criterion, cIdx) => {
+            const level = dm.getEvalLevel(student.id, currentActivity, aflpKey, criterion.id);
+            const currentScore = dm.getEvalScore(student.id, currentActivity, aflpKey, criterion.id, criterion, config.maxBase);
+            
+            // Calculate min/max for this criterion based on level
+            const maxForCriterion = criterion.weight * config.maxBase;
+            const stepSize = maxForCriterion / 4;
+            const minScore = level > 0 ? (level - 1) * stepSize : 0;
+            const maxScore = level > 0 ? level * stepSize : maxForCriterion;
+            
+            html += `<td>
+                <div class="degree-selector-inline">
+                    ${[1,2,3,4].map(d => `<button class="degree-btn-mini d${d} ${level === d ? 'selected' : ''}" 
+                        onclick="setDeg('${student.id}','${aflpKey}','${criterion.id}',${d},this,${isSequence},${aflpIndex},${cIdx})">${d}</button>`).join('')}
+                </div>
+                <div class="score-input-container" id="input-${student.id}-${aflpKey}-${criterion.id}" ${level === 0 ? 'style="display:none"' : ''}>
+                    <input type="number" 
+                        class="score-input" 
+                        value="${currentScore.toFixed(1)}" 
+                        min="${minScore.toFixed(1)}" 
+                        max="${maxScore.toFixed(1)}" 
+                        step="0.5"
+                        data-student="${student.id}"
+                        data-aflp="${aflpKey}"
+                        data-criterion="${criterion.id}"
+                        data-isseq="${isSequence}"
+                        data-aflpidx="${aflpIndex}"
+                        onchange="setScore(this)">
+                    <span class="score-range">(${minScore.toFixed(1)}-${maxScore.toFixed(1)})</span>
+                </div>
+            </td>`;
+        });
+
+        html += `<td class="score-cell" id="sc-${student.id}-${aflpKey}">${score}</td></tr>`;
+    });
+
+    html += '</tbody></table></div></div></div>';
+    return html;
+}
+
+function setDeg(studentId, aflp, criterion, level, btn, isSeq, aflpIdx, criterionIdx) {
+    const actConfig = ACTIVITIES[currentActivity];
+    const config = actConfig.criteria[aflp];
+    const criterionConfig = config.criteria[criterionIdx];
+    
+    const currentLevel = dm.getEvalLevel(studentId, currentActivity, aflp, criterion);
+    const newLevel = currentLevel === level ? 0 : level;
+    
+    // Calculate default score for this level
+    const maxForCriterion = criterionConfig.weight * config.maxBase;
+    const stepSize = maxForCriterion / 4;
+    const defaultScore = newLevel > 0 ? (newLevel - 0.5) * stepSize : 0; // Middle of the range
+    
+    dm.setEval(studentId, currentActivity, aflp, criterion, newLevel, newLevel > 0 ? defaultScore : null);
+
+    // Update buttons
+    btn.closest('td').querySelectorAll('.degree-btn-mini').forEach((b, i) => {
+        b.classList.toggle('selected', newLevel === i + 1);
+    });
+
+    // Show/hide and update score input
+    const inputContainer = document.getElementById(`input-${studentId}-${aflp}-${criterion}`);
+    if (inputContainer) {
+        if (newLevel > 0) {
+            inputContainer.style.display = 'block';
+            const input = inputContainer.querySelector('input');
+            const minScore = (newLevel - 1) * stepSize;
+            const maxScore = newLevel * stepSize;
+            input.min = minScore.toFixed(1);
+            input.max = maxScore.toFixed(1);
+            input.value = defaultScore.toFixed(1);
+            inputContainer.querySelector('.score-range').textContent = `(${minScore.toFixed(1)}-${maxScore.toFixed(1)})`;
+        } else {
+            inputContainer.style.display = 'none';
+        }
+    }
+
+    // Update AFLP score
+    const score = dm.calcAFLPScore(studentId, currentActivity, aflp, isSeq, aflpIdx);
+    document.getElementById(`sc-${studentId}-${aflp}`).textContent = score;
+}
+
+function setScore(input) {
+    const studentId = input.dataset.student;
+    const aflp = input.dataset.aflp;
+    const criterion = input.dataset.criterion;
+    const isSeq = input.dataset.isseq === 'true';
+    const aflpIdx = parseInt(input.dataset.aflpidx);
+    
+    let score = parseFloat(input.value);
+    const min = parseFloat(input.min);
+    const max = parseFloat(input.max);
+    
+    // Clamp value
+    if (score < min) score = min;
+    if (score > max) score = max;
+    input.value = score.toFixed(1);
+    
+    // Save
+    dm.setEvalScore(studentId, currentActivity, aflp, criterion, score);
+    
+    // Update AFLP score
+    const totalScore = dm.calcAFLPScore(studentId, currentActivity, aflp, isSeq, aflpIdx);
+    document.getElementById(`sc-${studentId}-${aflp}`).textContent = totalScore;
+}
+
+function setRep(studentId, rep) {
+    dm.setRepartition(studentId, currentActivity, parseInt(rep));
+    loadSequenceGrid(); // Refresh to recalculate all sequence scores
+}
+
+// ===== RESULTS =====
+function displayStats() {
+    const students = dm.getAllStudents();
+    let total = 0, count = 0;
+    students.forEach(s => {
+        const score = dm.getTotalScore(s.id, currentActivity);
+        if (score > 0) { total += score; count++; }
+    });
+
+    document.getElementById('statsGrid').innerHTML = `
+        <div class="stat-card"><div class="stat-value">${dm.getClasses().length}</div><div class="stat-label">Classes</div></div>
+        <div class="stat-card"><div class="stat-value">${students.length}</div><div class="stat-label">Élèves</div></div>
+        <div class="stat-card"><div class="stat-value">${count}</div><div class="stat-label">Évalués</div></div>
+        <div class="stat-card"><div class="stat-value">${count ? (total/count).toFixed(1) : 0}</div><div class="stat-label">Moyenne</div></div>
+    `;
+}
+
+function displayResults() {
+    const classId = document.getElementById('resultsClass').value;
+    const container = document.getElementById('resultsDisplay');
+    let students = classId ? dm.getStudentsByClass(classId) : dm.getAllStudents();
+
+    if (!students.length) { container.innerHTML = '<div class="empty-state">Aucun élève</div>'; return; }
+
+    students.sort((a, b) => dm.getTotalScore(b.id, currentActivity) - dm.getTotalScore(a.id, currentActivity));
+    const actConfig = ACTIVITIES[currentActivity];
+
+    container.innerHTML = `<ul class="student-list">${students.map((s, i) => {
+        const c = dm.getClasses().find(cl => cl.id === s.classId);
+        return `<li class="student-item">
+            <div class="student-info">
+                <div class="student-name-display">#${i+1} ${s.name} ${actConfig.needsGender ? `(${s.gender})` : ''}</div>
+                <div class="student-score">${c?.name || ''} | Séq: ${dm.getSeqScore(s.id, currentActivity)}/8 | Fin: ${dm.getFinScore(s.id, currentActivity)}/12</div>
+            </div>
+            <span class="note-badge">${dm.getTotalScore(s.id, currentActivity)}/20</span>
+        </li>`;
+    }).join('')}</ul>`;
+}
+
+// ===== EXPORT =====
+function exportToCSV() {
+    const students = dm.getAllStudents();
+    const classes = dm.getClasses();
+    const actConfig = ACTIVITIES[currentActivity];
+
+    let headers = ['Classe', 'Nom'];
+    if (actConfig.needsGender) headers.push('Sexe');
+    headers.push('Répartition');
+
+    actConfig.seqAFLPs.forEach(aflp => {
+        actConfig.criteria[aflp].criteria.forEach(c => headers.push(`${aflp}_${c.id}_Niveau`, `${aflp}_${c.id}_Note`));
+        headers.push(`Score_${aflp}`);
+    });
+    actConfig.finAFLPs.forEach(aflp => {
+        actConfig.criteria[aflp].criteria.forEach(c => headers.push(`${aflp}_${c.id}_Niveau`, `${aflp}_${c.id}_Note`));
+        headers.push(`Score_${aflp}`);
+    });
+    headers.push('Note_Séquence', 'Note_Finale', 'Note_Totale');
+
+    let csv = headers.join(',') + '\n';
+
+    students.forEach(s => {
+        const c = classes.find(cl => cl.id === s.classId);
+        let row = [c?.name || '', s.name];
+        if (actConfig.needsGender) row.push(s.gender);
+        row.push(REPARTITIONS[dm.getRepartition(s.id, currentActivity)].label);
+
+        actConfig.seqAFLPs.forEach((aflp, i) => {
+            const config = actConfig.criteria[aflp];
+            config.criteria.forEach(cr => {
+                row.push(dm.getEvalLevel(s.id, currentActivity, aflp, cr.id));
+                row.push(dm.getEvalScore(s.id, currentActivity, aflp, cr.id, cr, config.maxBase));
+            });
+            row.push(dm.calcAFLPScore(s.id, currentActivity, aflp, true, i));
+        });
+        actConfig.finAFLPs.forEach(aflp => {
+            const config = actConfig.criteria[aflp];
+            config.criteria.forEach(cr => {
+                row.push(dm.getEvalLevel(s.id, currentActivity, aflp, cr.id));
+                row.push(dm.getEvalScore(s.id, currentActivity, aflp, cr.id, cr, config.maxBase));
+            });
+            row.push(dm.calcAFLPScore(s.id, currentActivity, aflp, false));
+        });
+        row.push(dm.getSeqScore(s.id, currentActivity), dm.getFinScore(s.id, currentActivity), dm.getTotalScore(s.id, currentActivity));
+
+        csv += row.join(',') + '\n';
+    });
+
+    downloadFile(`eval_${currentActivity}.csv`, csv, 'text/csv');
+    showNotification('CSV exporté !');
+}
+
+function exportJSON() {
+    downloadFile(`backup_eps_${new Date().toISOString().split('T')[0]}.json`, dm.exportJSON(), 'application/json');
+    showNotification('Backup téléchargé !');
+}
+
+function importJSON() {
+    const file = document.getElementById('importFile').files[0];
+    if (!file) return alert('Sélectionnez un fichier');
+    const reader = new FileReader();
+    reader.onload = e => {
+        if (dm.importJSON(e.target.result)) { showNotification('Import réussi !'); location.reload(); }
+        else alert('Erreur d\'import');
+    };
+    reader.readAsText(file);
+}
+
+function clearAllData() { dm.clearAll(); }
+
+// ===== UTILITIES =====
+function downloadFile(name, content, type) {
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(new Blob([content], { type }));
+    a.download = name;
+    a.click();
+}
+
+function showNotification(msg) {
+    const n = document.createElement('div');
+    n.className = 'notification';
+    n.textContent = '✓ ' + msg;
+    document.body.appendChild(n);
+    setTimeout(() => { n.style.opacity = '0'; setTimeout(() => n.remove(), 300); }, 2500);
+}
+
+function updateAllSelects() {
+    const classes = dm.getClasses();
+    ['selectClass', 'seqClass', 'finClass', 'resultsClass'].forEach(id => {
+        const sel = document.getElementById(id);
+        if (!sel) return;
+        const val = sel.value;
+        sel.innerHTML = '<option value="">-- Choisir --</option>' + classes.map(c => `<option value="${c.id}">${c.name}</option>`).join('');
+        sel.value = val;
+    });
+}
+
+// ===== INIT =====
+document.addEventListener('DOMContentLoaded', () => {
+    selectActivity('badminton');
+    updateAllSelects();
+});
+</script>
 </body>
 </html>
