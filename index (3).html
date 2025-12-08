@@ -5,71 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="refresh" content="0; url=eval-badminton.html">
     <title>Redirection - Évaluation Badminton</title>
-    <style>
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-        }
-        .container {
-            text-align: center;
-            padding: 40px;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 20px;
-            backdrop-filter: blur(10px);
-        }
-        h1 {
-            font-size: 3em;
-            margin-bottom: 20px;
-        }
-        p {
-            font-size: 1.2em;
-            margin: 10px 0;
-        }
-        a {
-            color: white;
-            text-decoration: underline;
-            font-weight: bold;
-        }
-        a:hover {
-            color: #ffd700;
-        }
-        .loading {
-            display: inline-block;
-            width: 50px;
-            height: 50px;
-            border: 5px solid rgba(255, 255, 255, 0.3);
-            border-top-color: white;
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-            margin-top: 20px;
-        }
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
-    </style>
 </head>
 <body>
-    <div class="container">
-        <h1>🏸</h1>
-        <h2>Évaluation Badminton - CAP</h2>
-        <p>Redirection en cours...</p>
-        <div class="loading"></div>
-        <p style="margin-top: 30px; font-size: 0.9em;">
-            <a href="eval-badminton.html">Cliquez ici si la redirection ne fonctionne pas</a>
-        </p>
-    </div>
-    
+    <p>Redirection en cours vers l'application...</p>
+    <p><a href="eval-badminton.html">Cliquez ici si la redirection ne fonctionne pas</a></p>
     <script>
-        // Redirection immédiate en JavaScript (backup de la meta refresh)
-        setTimeout(function() {
-            window.location.href = 'eval-badminton.html';
-        }, 100);
+        window.location.href = 'eval-badminton.html';
     </script>
 </body>
 </html>
