@@ -1,0 +1,9 @@
+{
+    "name": "Évaluation EPS - CAP",
+    "short_name": "Eval EPS",
+    "description": "Application multi-activités pour l'évaluation EPS en CAP",
+    "start_url": "eval-eps-multi.html",
+    "display": "standalone",
+    "background_color": "#f0fdfa",
+    "theme_color": "#0f766e"
+}
