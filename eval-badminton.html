@@ -1,0 +1,846 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Évaluation Badminton - CAP</title>
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#1e40af">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #1e40af;
+            --primary-dark: #1e3a8a;
+            --secondary: #10b981;
+            --danger: #ef4444;
+            --warning: #f59e0b;
+            --gray-100: #f3f4f6;
+            --gray-200: #e5e7eb;
+            --gray-300: #d1d5db;
+            --gray-700: #374151;
+            --gray-900: #111827;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            color: var(--gray-900);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        header {
+            background: var(--primary);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        header h1 {
+            font-size: 2em;
+            margin-bottom: 10px;
+        }
+
+        header p {
+            opacity: 0.9;
+            font-size: 1.1em;
+        }
+
+        .tabs {
+            display: flex;
+            background: var(--gray-100);
+            border-bottom: 2px solid var(--gray-200);
+        }
+
+        .tab {
+            flex: 1;
+            padding: 15px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 1em;
+            font-weight: 600;
+            color: var(--gray-700);
+            transition: all 0.3s;
+            position: relative;
+        }
+
+        .tab:hover {
+            background: var(--gray-200);
+        }
+
+        .tab.active {
+            background: white;
+            color: var(--primary);
+        }
+
+        .tab.active::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: var(--primary);
+        }
+
+        .content {
+            padding: 30px;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+            animation: fadeIn 0.3s;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--gray-700);
+        }
+
+        input[type="text"],
+        input[type="number"],
+        select {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid var(--gray-200);
+            border-radius: 8px;
+            font-size: 1em;
+            transition: border-color 0.3s;
+        }
+
+        input[type="text"]:focus,
+        input[type="number"]:focus,
+        select:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(30, 64, 175, 0.3);
+        }
+
+        .btn-secondary {
+            background: var(--secondary);
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background: #059669;
+            transform: translateY(-2px);
+        }
+
+        .btn-danger {
+            background: var(--danger);
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background: #dc2626;
+        }
+
+        .btn-small {
+            padding: 6px 12px;
+            font-size: 0.9em;
+        }
+
+        .card {
+            background: var(--gray-100);
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            border: 2px solid transparent;
+            transition: all 0.3s;
+        }
+
+        .card:hover {
+            border-color: var(--primary);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .card h3 {
+            color: var(--primary);
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .student-list {
+            list-style: none;
+        }
+
+        .student-item {
+            background: white;
+            padding: 15px;
+            margin-bottom: 10px;
+            border-radius: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s;
+        }
+
+        .student-item:hover {
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            transform: translateX(5px);
+        }
+
+        .student-info {
+            flex: 1;
+        }
+
+        .student-name {
+            font-weight: 600;
+            color: var(--gray-900);
+            margin-bottom: 4px;
+        }
+
+        .student-note {
+            font-size: 0.9em;
+            color: var(--gray-700);
+        }
+
+        .note-badge {
+            background: var(--primary);
+            color: white;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 1.1em;
+        }
+
+        .actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .degree-selector {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .degree-btn {
+            padding: 15px;
+            border: 2px solid var(--gray-300);
+            border-radius: 8px;
+            background: white;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-align: center;
+            font-weight: 600;
+        }
+
+        .degree-btn:hover {
+            border-color: var(--primary);
+            transform: scale(1.05);
+        }
+
+        .degree-btn.selected {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+
+        .degree-btn .degree-title {
+            font-size: 1.2em;
+            margin-bottom: 5px;
+        }
+
+        .degree-btn .degree-desc {
+            font-size: 0.85em;
+            opacity: 0.8;
+        }
+
+        .evaluation-form {
+            background: var(--gray-100);
+            padding: 25px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+        }
+
+        .eval-section {
+            margin-bottom: 30px;
+            padding: 20px;
+            background: white;
+            border-radius: 8px;
+        }
+
+        .eval-section h4 {
+            color: var(--primary);
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--gray-200);
+        }
+
+        .radio-group {
+            margin-top: 15px;
+        }
+
+        .radio-option {
+            display: flex;
+            align-items: center;
+            padding: 12px;
+            margin-bottom: 8px;
+            background: var(--gray-100);
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .radio-option:hover {
+            background: var(--gray-200);
+        }
+
+        .radio-option input[type="radio"] {
+            margin-right: 12px;
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+        }
+
+        .alert {
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .alert-info {
+            background: #dbeafe;
+            color: #1e40af;
+            border-left: 4px solid #3b82f6;
+        }
+
+        .alert-success {
+            background: #d1fae5;
+            color: #065f46;
+            border-left: 4px solid #10b981;
+        }
+
+        .alert-warning {
+            background: #fef3c7;
+            color: #92400e;
+            border-left: 4px solid #f59e0b;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 12px;
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 2.5em;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .stat-label {
+            opacity: 0.9;
+            font-size: 0.9em;
+        }
+
+        .match-results {
+            margin-top: 15px;
+        }
+
+        .match-input {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 10px;
+            align-items: center;
+        }
+
+        .match-input label {
+            margin: 0;
+            min-width: 150px;
+        }
+
+        .export-section {
+            margin-top: 30px;
+            padding: 20px;
+            background: var(--gray-100);
+            border-radius: 12px;
+        }
+
+        @media (max-width: 768px) {
+            .tabs {
+                flex-direction: column;
+            }
+
+            .degree-selector {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-top-color: white;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: var(--gray-700);
+        }
+
+        .empty-state svg {
+            width: 100px;
+            height: 100px;
+            margin-bottom: 20px;
+            opacity: 0.3;
+        }
+
+        .criteria-detail {
+            background: #f9fafb;
+            padding: 10px;
+            border-left: 3px solid var(--primary);
+            margin-top: 10px;
+            font-size: 0.95em;
+            line-height: 1.6;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🏸 Évaluation Badminton - CAP</h1>
+            <p>Gestion des évaluations au fil de la séquence et évaluation finale</p>
+        </header>
+
+        <div class="tabs">
+            <button class="tab active" onclick="switchTab('classes')">📚 Classes</button>
+            <button class="tab" onclick="switchTab('evaluate')">📝 Évaluer</button>
+            <button class="tab" onclick="switchTab('results')">📊 Résultats</button>
+            <button class="tab" onclick="switchTab('export')">💾 Export</button>
+        </div>
+
+        <div class="content">
+            <!-- TAB: Gestion des classes -->
+            <div id="tab-classes" class="tab-content active">
+                <div class="card">
+                    <h3>➕ Ajouter une classe</h3>
+                    <div class="form-group">
+                        <label for="className">Nom de la classe</label>
+                        <input type="text" id="className" placeholder="Ex: CAP 1A, BAC PRO 2">
+                    </div>
+                    <button class="btn btn-primary" onclick="addClass()">Créer la classe</button>
+                </div>
+
+                <div class="card">
+                    <h3>👥 Ajouter des élèves</h3>
+                    <div class="form-group">
+                        <label for="selectClass">Sélectionner une classe</label>
+                        <select id="selectClass" onchange="updateStudentForm()">
+                            <option value="">-- Choisir une classe --</option>
+                        </select>
+                    </div>
+                    <div id="studentFormSection" style="display: none;">
+                        <div class="form-group">
+                            <label for="studentName">Nom et prénom de l'élève</label>
+                            <input type="text" id="studentName" placeholder="Ex: Dupont Jean">
+                        </div>
+                        <button class="btn btn-secondary" onclick="addStudent()">Ajouter l'élève</button>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3>📋 Classes et élèves</h3>
+                    <div id="classesList"></div>
+                </div>
+            </div>
+
+            <!-- TAB: Évaluation -->
+            <div id="tab-evaluate" class="tab-content">
+                <div class="alert alert-info">
+                    <span>ℹ️</span>
+                    <div>
+                        <strong>Mode d'évaluation :</strong> Choisissez d'abord le type d'évaluation (au fil de la séquence ou finale),
+                        puis sélectionnez la classe et l'élève à évaluer.
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3>🎯 Type d'évaluation</h3>
+                    <div class="radio-group">
+                        <label class="radio-option">
+                            <input type="radio" name="evalType" value="sequence" checked onchange="updateEvalType()">
+                            <div>
+                                <strong>Évaluation au fil de la séquence (8 pts)</strong>
+                                <div style="font-size: 0.9em; color: var(--gray-700); margin-top: 4px;">
+                                    AFLP4 (Arbitrer/Observer) et AFLP5 (Échauffement) - Choix de répartition
+                                </div>
+                            </div>
+                        </label>
+                        <label class="radio-option">
+                            <input type="radio" name="evalType" value="finale" onchange="updateEvalType()">
+                            <div>
+                                <strong>Évaluation finale (12 pts)</strong>
+                                <div style="font-size: 0.9em; color: var(--gray-700); margin-top: 4px;">
+                                    AFLP1 (Gain matchs - 7 pts) et AFLP2 (Répertoire technique - 5 pts)
+                                </div>
+                            </div>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3>👤 Sélection de l'élève</h3>
+                    <div class="grid">
+                        <div class="form-group">
+                            <label for="evalClass">Classe</label>
+                            <select id="evalClass" onchange="updateEvalStudents()">
+                                <option value="">-- Choisir une classe --</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="evalStudent">Élève</label>
+                            <select id="evalStudent" onchange="loadStudentEval()">
+                                <option value="">-- Choisir un élève --</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Formulaire évaluation au fil de la séquence -->
+                <div id="sequenceEvalForm" class="evaluation-form">
+                    <h3 style="margin-bottom: 20px; color: var(--primary);">📋 Évaluation au fil de la séquence</h3>
+                    
+                    <div class="alert alert-warning">
+                        <span>⚠️</span>
+                        <div>
+                            <strong>Choix de répartition :</strong> L'élève doit choisir la répartition des points entre AFLP4 et AFLP5 :
+                            <strong>4-4</strong>, <strong>2-6</strong> ou <strong>6-2</strong>
+                        </div>
+                    </div>
+
+                    <div class="eval-section">
+                        <h4>Répartition des points</h4>
+                        <div class="radio-group">
+                            <label class="radio-option">
+                                <input type="radio" name="pointsDistribution" value="4-4" checked onchange="updatePointsDisplay()">
+                                <strong>4-4</strong> (AFLP4: 4 pts / AFLP5: 4 pts)
+                            </label>
+                            <label class="radio-option">
+                                <input type="radio" name="pointsDistribution" value="2-6" onchange="updatePointsDisplay()">
+                                <strong>2-6</strong> (AFLP4: 2 pts / AFLP5: 6 pts)
+                            </label>
+                            <label class="radio-option">
+                                <input type="radio" name="pointsDistribution" value="6-2" onchange="updatePointsDisplay()">
+                                <strong>6-2</strong> (AFLP4: 6 pts / AFLP5: 2 pts)
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="eval-section">
+                        <h4>AFLP4 - Arbitrer et Observer (<span id="aflp4Points">4</span> points)</h4>
+                        <div class="criteria-detail">
+                            <strong>Critères (2) :</strong><br>
+                            • <strong>1/2</strong> Arbitre (connaissance des règles et application juste) + acceptation des décisions de l'arbitre<br>
+                            • <strong>1/2</strong> Justesse et précision de l'observation
+                        </div>
+                        <div class="degree-selector">
+                            <button class="degree-btn" onclick="selectDegree('aflp4', 1)">
+                                <div class="degree-title">Degré 1</div>
+                                <div class="degree-desc">Respect difficile, manque d'attention</div>
+                                <div style="margin-top: 8px; font-size: 1.2em;">1 pt</div>
+                            </button>
+                            <button class="degree-btn" onclick="selectDegree('aflp4', 2)">
+                                <div class="degree-title">Degré 2</div>
+                                <div class="degree-desc">Respect des règles, quelques hésitations</div>
+                                <div style="margin-top: 8px; font-size: 1.2em;">2 pts</div>
+                            </button>
+                            <button class="degree-btn" onclick="selectDegree('aflp4', 3)">
+                                <div class="degree-title">Degré 3</div>
+                                <div class="degree-desc">Fait respecter, quelques erreurs</div>
+                                <div style="margin-top: 8px; font-size: 1.2em;">3 pts</div>
+                            </button>
+                            <button class="degree-btn" onclick="selectDegree('aflp4', 4)">
+                                <div class="degree-title">Degré 4</div>
+                                <div class="degree-desc">Efficacité totale, aide les autres</div>
+                                <div style="margin-top: 8px; font-size: 1.2em;">4 pts</div>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="eval-section">
+                        <h4>AFLP5 - Échauffement et Préparation (<span id="aflp5Points">4</span> points)</h4>
+                        <div class="criteria-detail">
+                            <strong>Critères (2) :</strong><br>
+                            • <strong>1/2</strong> Échauffement général (mobilisations articulaires, échauffement général et déplacements spécifiques)<br>
+                            • <strong>1/2</strong> Échauffement spécifique (préparation en partenariat sur 4 temps avec échanges progressifs et complets)
+                        </div>
+                        <div class="degree-selector">
+                            <button class="degree-btn" onclick="selectDegree('aflp5', 1)">
+                                <div class="degree-title">Degré 1</div>
+                                <div class="degree-desc">Ébauche sans effets réels</div>
+                                <div style="margin-top: 8px; font-size: 1.2em;">1 pt</div>
+                            </button>
+                            <button class="degree-btn" onclick="selectDegree('aflp5', 2)">
+                                <div class="degree-title">Degré 2</div>
+                                <div class="degree-desc">Échauffement global et rapide</div>
+                                <div style="margin-top: 8px; font-size: 1.2em;">2 pts</div>
+                            </button>
+                            <button class="degree-btn" onclick="selectDegree('aflp5', 3)">
+                                <div class="degree-title">Degré 3</div>
+                                <div class="degree-desc">Structuré et progressif</div>
+                                <div style="margin-top: 8px; font-size: 1.2em;">3 pts</div>
+                            </button>
+                            <button class="degree-btn" onclick="selectDegree('aflp5', 4)">
+                                <div class="degree-title">Degré 4</div>
+                                <div class="degree-desc">Autonome et maîtrise complète</div>
+                                <div style="margin-top: 8px; font-size: 1.2em;">4 pts</div>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div style="background: var(--gray-100); padding: 15px; border-radius: 8px; margin-top: 20px;">
+                        <strong>Note totale séquence : <span id="sequenceTotal">0</span> / 8 points</strong>
+                    </div>
+
+                    <div class="actions">
+                        <button class="btn btn-primary" onclick="saveSequenceEval()">💾 Enregistrer l'évaluation</button>
+                        <button class="btn btn-secondary btn-small" onclick="resetSequenceForm()">🔄 Réinitialiser</button>
+                    </div>
+                </div>
+
+                <!-- Formulaire évaluation finale -->
+                <div id="finaleEvalForm" class="evaluation-form" style="display: none;">
+                    <h3 style="margin-bottom: 20px; color: var(--primary);">🏆 Évaluation Finale</h3>
+                    
+                    <div class="eval-section">
+                        <h4>AFLP1 - Gain de matchs en lien avec le lieu de frappes (7 points)</h4>
+                        <div class="criteria-detail">
+                            <strong>Critères (3) :</strong><br>
+                            • <strong>1/3</strong> Gain de matchs<br>
+                            • <strong>1/3</strong> Lieu des points en zone dangereuse (victoire ou défaite avec la manière)<br>
+                            • <strong>1/3</strong> Points gagnants et atteinte des espaces libres
+                        </div>
+                        
+                        <div class="match-results">
+                            <div class="form-group">
+                                <label>Nombre total de matchs joués</label>
+                                <input type="number" id="totalMatches" min="0" value="3" onchange="calculateAFLP1()">
+                            </div>
+                            <div class="form-group">
+                                <label>Nombre de matchs gagnés</label>
+                                <input type="number" id="wonMatches" min="0" value="0" onchange="calculateAFLP1()">
+                            </div>
+                        </div>
+
+                        <div class="degree-selector">
+                            <button class="degree-btn" onclick="selectDegree('aflp1', 1)" id="aflp1-degree1">
+                                <div class="degree-title">Degré 1</div>
+                                <div class="degree-desc">Aucun match gagné</div>
+                                <div style="margin-top: 8px; font-size: 1.2em;">0-1 pt</div>
+                            </button>
+                            <button class="degree-btn" onclick="selectDegree('aflp1', 2)" id="aflp1-degree2">
+                                <div class="degree-title">Degré 2</div>
+                                <div class="degree-desc">1/3 des matchs gagnés</div>
+                                <div style="margin-top: 8px; font-size: 1.2em;">1.5-3 pts</div>
+                            </button>
+                            <button class="degree-btn" onclick="selectDegree('aflp1', 3)" id="aflp1-degree3">
+                                <div class="degree-title">Degré 3</div>
+                                <div class="degree-desc">2/3 des matchs gagnés</div>
+                                <div style="margin-top: 8px; font-size: 1.2em;">3.5-5 pts</div>
+                            </button>
+                            <button class="degree-btn" onclick="selectDegree('aflp1', 4)" id="aflp1-degree4">
+                                <div class="degree-title">Degré 4</div>
+                                <div class="degree-desc">Tous les matchs gagnés</div>
+                                <div style="margin-top: 8px; font-size: 1.2em;">5.5-7 pts</div>
+                            </button>
+                        </div>
+
+                        <div class="form-group" style="margin-top: 15px;">
+                            <label>Note AFLP1 - Ajustez selon les 3 critères (zones dangereuses + espaces libres)</label>
+                            <input type="number" id="aflp1Score" min="0" max="7" step="0.5" value="0" onchange="calculateFinaleTotal()">
+                        </div>
+                    </div>
+
+                    <div class="eval-section">
+                        <h4>AFLP2 - Variété technique et Replacement (5 points)</h4>
+                        <div class="criteria-detail">
+                            <strong>Critères (2) :</strong><br>
+                            • <strong>1/2</strong> Qualité et variété des frappes (service, coup droit, revers, amortis, dégagements)<br>
+                            • <strong>1/2</strong> Replacement après chaque frappe
+                        </div>
+                        <div class="degree-selector">
+                            <button class="degree-btn" onclick="selectDegree('aflp2', 1)">
+                                <div class="degree-title">Degré 1</div>
+                                <div class="degree-desc">Peu de techniques, faible efficacité</div>
+                                <div style="margin-top: 8px; font-size: 1.2em;">0-0.5 pt</div>
+                            </button>
+                            <button class="degree-btn" onclick="selectDegree('aflp2', 2)">
+                                <div class="degree-title">Degré 2</div>
+                                <div class="degree-desc">1-2 techniques préférentielles</div>
+                                <div style="margin-top: 8px; font-size: 1.2em;">1-2 pts</div>
+                            </button>
+                            <button class="degree-btn" onclick="selectDegree('aflp2', 3)">
+                                <div class="degree-title">Degré 3</div>
+                                <div class="degree-desc">Plusieurs techniques efficaces</div>
+                                <div style="margin-top: 8px; font-size: 1.2em;">2.5-4 pts</div>
+                            </button>
+                            <button class="degree-btn" onclick="selectDegree('aflp2', 4)">
+                                <div class="degree-title">Degré 4</div>
+                                <div class="degree-desc">Variété complète et efficace</div>
+                                <div style="margin-top: 8px; font-size: 1.2em;">4.5-5 pts</div>
+                            </button>
+                        </div>
+
+                        <div class="form-group" style="margin-top: 15px;">
+                            <label>Note AFLP2 - Ajustez selon variété ET replacement</label>
+                            <input type="number" id="aflp2Score" min="0" max="5" step="0.5" value="0" onchange="calculateFinaleTotal()">
+                        </div>
+                    </div>
+
+                    <div style="background: var(--gray-100); padding: 15px; border-radius: 8px; margin-top: 20px;">
+                        <strong>Note totale finale : <span id="finaleTotal">0</span> / 12 points</strong>
+                    </div>
+
+                    <div class="actions">
+                        <button class="btn btn-primary" onclick="saveFinaleEval()">💾 Enregistrer l'évaluation</button>
+                        <button class="btn btn-secondary btn-small" onclick="resetFinaleForm()">🔄 Réinitialiser</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TAB: Résultats -->
+            <div id="tab-results" class="tab-content">
+                <div class="card">
+                    <h3>📊 Statistiques générales</h3>
+                    <div class="stats-grid" id="statsGrid"></div>
+                </div>
+
+                <div class="card">
+                    <h3>🎯 Résultats par classe</h3>
+                    <div class="form-group">
+                        <label for="resultsClass">Sélectionner une classe</label>
+                        <select id="resultsClass" onchange="displayResults()">
+                            <option value="">-- Toutes les classes --</option>
+                        </select>
+                    </div>
+                    <div id="resultsDisplay"></div>
+                </div>
+            </div>
+
+            <!-- TAB: Export -->
+            <div id="tab-export" class="tab-content">
+                <div class="card">
+                    <h3>💾 Exporter les données</h3>
+                    <p style="margin-bottom: 20px; color: var(--gray-700);">
+                        Exportez les évaluations de vos élèves au format CSV pour les utiliser dans un tableur.
+                    </p>
+                    <div class="actions">
+                        <button class="btn btn-primary" onclick="exportToCSV()">📥 Télécharger CSV</button>
+                        <button class="btn btn-secondary" onclick="exportJSON()">📥 Télécharger JSON (backup)</button>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3>🔄 Importer des données</h3>
+                    <p style="margin-bottom: 20px; color: var(--gray-700);">
+                        Restaurez une sauvegarde JSON complète.
+                    </p>
+                    <input type="file" id="importFile" accept=".json" style="margin-bottom: 15px;">
+                    <button class="btn btn-secondary" onclick="importJSON()">📤 Importer JSON</button>
+                </div>
+
+                <div class="card">
+                    <h3>⚠️ Gestion des données</h3>
+                    <p style="margin-bottom: 20px; color: var(--gray-700);">
+                        Attention : Cette action supprimera toutes les données stockées localement.
+                    </p>
+                    <button class="btn btn-danger" onclick="clearAllData()">🗑️ Supprimer toutes les données</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
